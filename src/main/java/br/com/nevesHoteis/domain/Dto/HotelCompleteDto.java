@@ -14,7 +14,7 @@ public record HotelCompleteDto (
          BigDecimal dailyValue,
          AddressCompleteDto address
 ){
-    HotelCompleteDto(Hotel hotel) {
+    public HotelCompleteDto(Hotel hotel) {
         this(hotel.getId(), hotel.getName(), hotel.getAvailabilityDate()
         , hotel.getDailyValue(), new AddressCompleteDto( hotel.getAddress()));
     }

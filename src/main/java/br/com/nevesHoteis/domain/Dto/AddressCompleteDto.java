@@ -10,7 +10,7 @@ public record AddressCompleteDto (
      String city,
      String neighborhood,
      String propertyLocation){
-    AddressCompleteDto(Address address){
+    public AddressCompleteDto(Address address){
         this(address.getId(), address.getCep(), address.getState(),
                  address.getCity(), address.getNeighborhood(), address.getPropertyLocation());
     }

@@ -1,5 +1,6 @@
 package br.com.nevesHoteis.domain;
 
+import br.com.nevesHoteis.domain.Dto.AddressCompleteDto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -22,4 +23,11 @@ public class Address {
     private String neighborhood;
     private String propertyLocation;
 
+    public Address(AddressCompleteDto dto) {
+        this.cep=dto.cep();
+        this.state= dto.state();
+        this.city=dto.city();
+        this.neighborhood=dto.neighborhood();
+        this.propertyLocation= dto.propertyLocation();
+    }
 }

@@ -65,6 +65,11 @@
 			<artifactId>spring-security-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>com.auth0</groupId>
+			<artifactId>java-jwt</artifactId>
+			<version>4.4.0</version>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -105,6 +110,31 @@
 						</exclude>
 					</excludes>
 				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.pitest</groupId>
+				<artifactId>pitest-maven</artifactId>
+				<version>1.16.0</version>
+				<dependencies>
+					<dependency>
+						<groupId>org.pitest</groupId>
+						<artifactId>pitest-junit5-plugin</artifactId>
+						<version>1.2.1</version>
+					</dependency>
+				</dependencies>
+				<configuration>
+					<targetClasses>
+						<param>br.com.nevesHoteis.controller.*</param>
+						<param>br.com.nevesHoteis.service.*</param>
+<!--						<param>br.com.StreamChallenge.repository.*</param>-->
+					</targetClasses>
+					<targetTests>
+						<param>br.com.nevesHoteis.controller.*</param>
+						<param>br.com.nevesHoteis.service.*</param>
+<!--						<param>br.com.StreamChallenge.repository.*</param>-->
+					</targetTests>
+				</configuration>
+
 			</plugin>
 		</plugins>
 	</build>

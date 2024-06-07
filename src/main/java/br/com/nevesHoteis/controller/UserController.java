@@ -1,15 +1,28 @@
 package br.com.nevesHoteis.controller;
 
+import br.com.nevesHoteis.domain.Dto.TokenDto;
+import br.com.nevesHoteis.domain.Dto.UserDto;
+import br.com.nevesHoteis.domain.User;
+import br.com.nevesHoteis.service.TokenService;
+import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("")
+@RequestMapping("/login")
 public class UserController {
-    @GetMapping()
-    ResponseEntity<String> helloWorld(){
-        return ResponseEntity.ok("Hello World!");
+    @Autowired
+    private AuthenticationManager manager;
+    @Autowired
+    private TokenService tokenService;
+    @PostMapping()
+    ResponseEntity<?> login(@Valid @RequestBody UserDto userDto){
+        UsernamePasswordAuthenticationToken userToken= new UsernamePasswordAuthenticationToken(userDto.login(), userDto.password());
+        Authentication authentication =manager.authenticate(userToken);
+        return ResponseEntity.ok(new TokenDto(tokenService.createdToken((User) authentication.getPrincipal())));
     }
 }

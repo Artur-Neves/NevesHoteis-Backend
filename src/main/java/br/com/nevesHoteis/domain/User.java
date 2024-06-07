@@ -20,14 +20,12 @@ public class User implements UserDetails {
     @Column(unique = true)
     private String login;
     private String password;
-    @Enumerated
-    @ElementCollection(targetClass = Roles.class, fetch = FetchType.EAGER)
-    @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))
-    private Set<Roles> rolesList = new HashSet<>();
+    @Enumerated(EnumType.STRING)
+    private Roles rolesList;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return rolesList;
+        return List.of(rolesList);
     }
 
     @Override
@@ -42,21 +40,21 @@ public class User implements UserDetails {
 
     @Override
     public boolean isAccountNonExpired() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isEnabled() {
-        return false;
+        return true;
     }
 }

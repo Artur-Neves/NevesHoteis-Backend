@@ -1,14 +1,10 @@
 package br.com.nevesHoteis.domain.Dto;
 
 import br.com.nevesHoteis.domain.Address;
-import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 
-public record AddressUpdateDto (
-        @NotNull
-        Long id,
+public record AddressDto(
         @Pattern(regexp = "\\d{5}-\\d{3}")
         @NotBlank
         String cep,
@@ -20,8 +16,8 @@ public record AddressUpdateDto (
         String neighborhood,
         @NotBlank
         String propertyLocation){
-    AddressUpdateDto(Address address){
-        this(address.getId(), address.getCep(), address.getState(),
+    public AddressDto(Address address){
+        this(address.getCep(), address.getState(),
                 address.getCity(), address.getNeighborhood(), address.getPropertyLocation());
     }
 }
