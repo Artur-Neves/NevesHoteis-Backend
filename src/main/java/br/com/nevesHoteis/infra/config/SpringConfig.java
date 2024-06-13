@@ -1,5 +1,8 @@
 package br.com.nevesHoteis.infra.config;
 
+import br.com.nevesHoteis.domain.Dto.PeopleDto;
+import br.com.nevesHoteis.domain.Dto.PeopleUpdateDto;
+import br.com.nevesHoteis.domain.SimpleUser;
 import br.com.nevesHoteis.infra.filter.AuthenticationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -18,6 +21,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import java.security.Security;
+import java.util.function.Function;
 
 @Configuration
 @EnableWebSecurity
@@ -32,13 +36,13 @@ public class SpringConfig {
                 .authorizeHttpRequests(req->{
                     req.requestMatchers(HttpMethod.GET, "/hotel/**").permitAll();
                     req.requestMatchers("/login").permitAll();
-                    req.anyRequest().authenticated();
+                    req.anyRequest().permitAll();
                 })
                 .addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
     @Bean
-    PasswordEncoder passwordEncoder (){
+    public PasswordEncoder passwordEncoder (){
         return new BCryptPasswordEncoder();
     }
     @Bean
@@ -49,5 +53,6 @@ public class SpringConfig {
     AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
       return  configuration.getAuthenticationManager();
     }
+
 
 }

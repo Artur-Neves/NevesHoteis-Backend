@@ -1,16 +1,13 @@
 package br.com.nevesHoteis.domain;
 
-import org.hibernate.validator.internal.constraintvalidators.bv.notempty.NotEmptyValidatorForArray;
 import org.springframework.security.core.GrantedAuthority;
 
-import java.util.Arrays;
-
-public enum Roles implements GrantedAuthority {
+public enum Role implements GrantedAuthority {
     ADMIN("admin"),
     EMPLOYEE("employee"),
     USER("user");
     private String role;
-    Roles(String role) {
+    Role(String role) {
         this.role= role;
     }
 

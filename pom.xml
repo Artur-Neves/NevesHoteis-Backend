@@ -126,12 +126,10 @@
 					<targetClasses>
 						<param>br.com.nevesHoteis.controller.*</param>
 						<param>br.com.nevesHoteis.service.*</param>
-<!--						<param>br.com.StreamChallenge.repository.*</param>-->
 					</targetClasses>
 					<targetTests>
 						<param>br.com.nevesHoteis.controller.*</param>
 						<param>br.com.nevesHoteis.service.*</param>
-<!--						<param>br.com.StreamChallenge.repository.*</param>-->
 					</targetTests>
 				</configuration>
 

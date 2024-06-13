@@ -31,26 +31,26 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
 
 @ExtendWith(MockitoExtension.class)
-class HotelServiceTest {
+class HotelServiceTest{
     @InjectMocks
     private HotelService service;
     @Mock
     private HotelRepository repository;
     @Mock
-    private Hotel hotelMock;
+    private Hotel tMock;
     @Mock
     private Pageable pageable;
     @Test
     @DisplayName("Testando a persistência de uma entidade")
     void test01(){
-        given(repository.save(any(Hotel.class))).willReturn(hotelMock);
-        assertEquals(hotelMock, service.save(hotelMock));
-        then(repository).should().save(hotelMock);
+        given(repository.save(any(Hotel.class))).willReturn(tMock);
+        assertEquals(tMock, service.save(tMock));
+        then(repository).should().save(tMock);
     }
     @Test
     @DisplayName("Testando o retorno de todas as entidades")
     void test02(){
-        Page<Hotel> pageHotel = new PageImpl<Hotel>(List.of(hotelMock));
+        Page<Hotel> pageHotel = new PageImpl<Hotel>(List.of(tMock));
         given(repository.findAll(pageable)).willReturn(pageHotel);
         assertEquals(pageHotel, service.findAll(pageable));
         then(repository).should().findAll(pageable);
@@ -58,15 +58,15 @@ class HotelServiceTest {
     @Test
     @DisplayName("Testando a exlusão de uma entidade")
     void test03(){
-        given(repository.findById(anyLong())).willReturn(Optional.of(hotelMock));
+        given(repository.findById(anyLong())).willReturn(Optional.of(tMock));
         service.delete(anyLong());
         then(repository).should().delete(any());
     }
     @Test
     @DisplayName("Testando a procura por de uma entidade pelo Id")
     void test04(){
-        given(repository.findById(anyLong())).willReturn(Optional.of(hotelMock));
-        assertEquals( hotelMock ,service.findById(anyLong()));
+        given(repository.findById(anyLong())).willReturn(Optional.of(tMock));
+        assertEquals( tMock ,service.findById(anyLong()));
         then(repository).should().findById(anyLong());
     }
     @Test
@@ -80,11 +80,11 @@ class HotelServiceTest {
     @DisplayName("Testando o lançamento de uma exception ao não achar uma entidade com o id passado")
     void test06(){
         Hotel hotel = randomHotel();
-        given(repository.findById(anyLong())).willReturn(Optional.of(hotelMock));
-        given(hotelMock.merge(hotel)).willReturn(hotel);
+        given(repository.findById(anyLong())).willReturn(Optional.of(tMock));
+        given(tMock.merge(hotel)).willReturn(hotel);
         assertEquals(hotel , service.update( anyLong(), hotel));
         then(repository).should().findById(anyLong());
-        then(hotelMock).should().merge(hotel);
+        then(tMock).should().merge(hotel);
     }
     private Hotel randomHotel(){
         return new Hotel(1L, "Hotel fiveStars", LocalDateTime.of(2024, 5, 3, 7, 36), new BigDecimal(35), randomAddress());

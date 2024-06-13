@@ -8,6 +8,8 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import java.sql.SQLException;
+
 @ControllerAdvice
 public class ExceptionAdvice {
     @ExceptionHandler(EntityNotFoundException.class)
@@ -22,7 +24,10 @@ public class ExceptionAdvice {
     ResponseEntity<?> methordArgument(HttpMessageNotReadableException e){
         return ResponseEntity.badRequest().body( new erroFormation("Error HTTP", e.getMessage() ));
     }
-
+    @ExceptionHandler(SQLException.class)
+    ResponseEntity<?> sqlException(SQLException e){
+        return ResponseEntity.badRequest().body( new erroFormation("Error SQL", e.getMessage() ));
+    }
     private record erroFormation(
             String field,
             String message

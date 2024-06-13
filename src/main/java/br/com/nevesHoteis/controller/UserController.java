@@ -1,7 +1,7 @@
 package br.com.nevesHoteis.controller;
 
 import br.com.nevesHoteis.domain.Dto.TokenDto;
-import br.com.nevesHoteis.domain.Dto.UserDto;
+import br.com.nevesHoteis.domain.Dto.LoginDto;
 import br.com.nevesHoteis.domain.User;
 import br.com.nevesHoteis.service.TokenService;
 import jakarta.validation.Valid;
@@ -20,8 +20,8 @@ public class UserController {
     @Autowired
     private TokenService tokenService;
     @PostMapping()
-    ResponseEntity<?> login(@Valid @RequestBody UserDto userDto){
-        UsernamePasswordAuthenticationToken userToken= new UsernamePasswordAuthenticationToken(userDto.login(), userDto.password());
+    ResponseEntity<?> login(@Valid @RequestBody LoginDto loginDto){
+        UsernamePasswordAuthenticationToken userToken= new UsernamePasswordAuthenticationToken(loginDto.login(), loginDto.password());
         Authentication authentication =manager.authenticate(userToken);
         return ResponseEntity.ok(new TokenDto(tokenService.createdToken((User) authentication.getPrincipal())));
     }

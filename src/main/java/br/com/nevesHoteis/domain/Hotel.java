@@ -9,7 +9,11 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 
 @Entity
 @Getter
@@ -23,11 +27,11 @@ public class Hotel {
     private String name;
     private LocalDateTime availabilityDate;
     private BigDecimal dailyValue;
-    @OneToOne()
+    @OneToOne( cascade = CascadeType.ALL)
     private Address address;
     public Hotel(HotelDto dto){
        this.name= dto.name();
-       this.availabilityDate=dto.availabilityDate();
+       this.availabilityDate= dto.availabilityDate() ;
        this.dailyValue = dto.dailyValue();
        this.address= new Address(dto.address());
     }
@@ -38,5 +42,9 @@ public class Hotel {
         this.dailyValue = dto.getDailyValue();
         this.address= dto.getAddress();
         return this;
+    }
+    private LocalDateTime convertLocalDateTime(String local)   {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+        return LocalDateTime.parse(local, formatter);
     }
 }

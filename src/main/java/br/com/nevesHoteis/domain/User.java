@@ -1,9 +1,13 @@
 package br.com.nevesHoteis.domain;
 
+import br.com.nevesHoteis.domain.Dto.LoginDto;
+import br.com.nevesHoteis.domain.Dto.UserDto;
+import br.com.nevesHoteis.domain.Dto.UserUpdateDto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -19,13 +23,24 @@ public class User implements UserDetails {
     private Long id;
     @Column(unique = true)
     private String login;
+    @Setter
     private String password;
+    @Setter
     @Enumerated(EnumType.STRING)
-    private Roles rolesList;
+    private Role role;
+
+    public User (LoginDto dto){
+        this.login = dto.login();
+        this.password = dto.password();
+    }
+
+    public User(UserUpdateDto dto) {
+        this.password = dto.password();
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(rolesList);
+        return List.of(role);
     }
 
     @Override
@@ -56,5 +71,9 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public void merge(User user) {
+        this.password=user.getPassword();
     }
 }

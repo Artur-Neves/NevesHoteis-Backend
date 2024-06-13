@@ -26,6 +26,7 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -130,7 +131,7 @@ class HotelControllerTest {
     }
 
     private Hotel randomHotel(){
-        return new Hotel(1L, "Hotel fiveStars", LocalDateTime.of(2024, 5, 3, 7, 36), new BigDecimal(35), randomAddress());
+        return new Hotel(1L, "Hotel fiveStars", LocalDateTime.now().plusWeeks(2), new BigDecimal(35), randomAddress());
     }
     private Address randomAddress(){
         return new Address(1L, "45502-245", "BA", "Jequié", "Beira rio", "Rua Portugual");
