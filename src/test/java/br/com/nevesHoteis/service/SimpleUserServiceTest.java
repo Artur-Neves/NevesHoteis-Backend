@@ -3,6 +3,8 @@ package br.com.nevesHoteis.service;
 import br.com.nevesHoteis.domain.*;
 import br.com.nevesHoteis.domain.Dto.PeopleDto;
 import br.com.nevesHoteis.domain.Dto.PeopleUpdateDto;
+import br.com.nevesHoteis.domain.validation.People.ValidatePeople;
+import br.com.nevesHoteis.domain.validation.User.ValidateUser;
 import br.com.nevesHoteis.repository.HotelRepository;
 import br.com.nevesHoteis.repository.SimpleUserRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -37,6 +39,12 @@ class SimpleUserServiceTest {
     private SimpleUser tMock;
     @Mock
     private Pageable pageable;
+    @Mock
+    private List<ValidateUser> validateUsers;
+    @Mock
+    private List<ValidatePeople> validatePeople;
+
+
     @DisplayName("Testando a seleção de todos os usuarios")
     @Test
     void test01(){
@@ -69,6 +77,9 @@ class SimpleUserServiceTest {
         assertEquals(tMock, service.save( new PeopleDto(simpleUser)));
         then(repository).should().save(any());
         then(tMock).should().passwordEncoder();
+        then(validateUsers).should().forEach(any());
+        then(validatePeople).should().forEach(any());
+
     }
     @DisplayName("Testando a atualização da entidade usuario")
     @Test
@@ -78,6 +89,8 @@ class SimpleUserServiceTest {
         when(tMock.merge(any())).thenReturn(simpleUser);
         assertEquals(simpleUser, service.update(simpleUser.getId(),  new PeopleUpdateDto(simpleUser)));
         then(tMock).should().merge(any());
+        then(validateUsers).should().forEach(any());
+        then(validatePeople).should().forEach(any());
     }
     @DisplayName("Testando a exclusão da entidade usuario")
     @Test

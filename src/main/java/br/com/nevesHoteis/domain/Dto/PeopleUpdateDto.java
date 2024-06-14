@@ -2,22 +2,23 @@ package br.com.nevesHoteis.domain.Dto;
 
 import br.com.nevesHoteis.domain.People;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Past;
+import jakarta.validation.constraints.*;
 
 import java.time.LocalDate;
 import java.util.Date;
 
 public record PeopleUpdateDto(
         @NotBlank
+        @Size(min = 3, max = 60)
         String name,
         @NotNull
         @Past
         LocalDate birthDay,
         @NotBlank
+        @Pattern(regexp = "\\d{3}.\\d{3}.\\d{3}-\\d{2}")
         String cpf,
         @NotBlank
+        @Pattern(regexp = "\\d{11}")
         String phone,
         @NotNull
         @Valid

@@ -3,6 +3,8 @@ package br.com.nevesHoteis.service;
 import br.com.nevesHoteis.domain.*;
 import br.com.nevesHoteis.domain.Dto.PeopleDto;
 import br.com.nevesHoteis.domain.Dto.PeopleUpdateDto;
+import br.com.nevesHoteis.domain.validation.People.ValidatePeople;
+import br.com.nevesHoteis.domain.validation.User.ValidateUser;
 import br.com.nevesHoteis.repository.EmployeeRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.DisplayName;
@@ -27,7 +29,7 @@ import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class EmployeeTest {
+class EmployeeServiceTest {
     @InjectMocks
     private EmployeeService service;
     @Mock
@@ -36,6 +38,10 @@ class EmployeeTest {
     private Employee employeeMock;
     @Mock
     private Pageable pageable;
+    @Mock
+    private List<ValidateUser> validateUsers;
+    @Mock
+    private List<ValidatePeople> validatePeople;
     @DisplayName("Testando a seleção de todos os employees")
     @Test
     void test01(){
@@ -68,6 +74,8 @@ class EmployeeTest {
         assertEquals(employeeMock, service.save( new PeopleDto(employee)));
         then(repository).should().save(any());
         then(employeeMock).should().passwordEncoder();
+        then(validateUsers).should().forEach(any());
+        then(validatePeople).should().forEach(any());
     }
     @DisplayName("Testando a atualização da entidade employee")
     @Test
@@ -77,6 +85,8 @@ class EmployeeTest {
         when(employeeMock.merge(any())).thenReturn(employee);
         assertEquals(employee, service.update(employee.getId(),  new PeopleUpdateDto(employee)));
         then(employeeMock).should().merge(any());
+        then(validateUsers).should().forEach(any());
+        then(validatePeople).should().forEach(any());
     }
     @DisplayName("Testando a exclusão da entidade employee")
     @Test

@@ -21,5 +21,6 @@ public interface PeopleService <T extends People> {
     public T update(long id, PeopleUpdateDto dto);
     public T findById(Long id);
     public void delete(Long id);
+    public void validate(People people);
 
 }

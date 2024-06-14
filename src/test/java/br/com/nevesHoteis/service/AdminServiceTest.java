@@ -6,6 +6,8 @@ import br.com.nevesHoteis.domain.Dto.PeopleUpdateDto;
 import br.com.nevesHoteis.domain.Role;
 import br.com.nevesHoteis.domain.Admin;
 import br.com.nevesHoteis.domain.User;
+import br.com.nevesHoteis.domain.validation.People.ValidatePeople;
+import br.com.nevesHoteis.domain.validation.User.ValidateUser;
 import br.com.nevesHoteis.repository.AdminRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.DisplayName;
@@ -39,6 +41,10 @@ class AdminServiceTest {
     private Admin adminMock;
     @Mock
     private Pageable pageable;
+    @Mock
+    private List<ValidateUser> validateUsers;
+    @Mock
+    private List<ValidatePeople> validatePeople;
     @DisplayName("Testando a seleção de todos os admins")
     @Test
     void test01(){
@@ -71,6 +77,8 @@ class AdminServiceTest {
         assertEquals(adminMock, service.save( new PeopleDto(admin)));
         then(repository).should().save(any());
         then(adminMock).should().passwordEncoder();
+        then(validateUsers).should().forEach(any());
+        then(validatePeople).should().forEach(any());
     }
     @DisplayName("Testando a atualização da entidade admin")
     @Test
@@ -80,6 +88,8 @@ class AdminServiceTest {
         when(adminMock.merge(any())).thenReturn(admin);
         assertEquals(admin, service.update(admin.getId(),  new PeopleUpdateDto(admin)));
         then(adminMock).should().merge(any());
+        then(validateUsers).should().forEach(any());
+        then(validatePeople).should().forEach(any());
     }
     @DisplayName("Testando a exclusão da entidade admin")
     @Test

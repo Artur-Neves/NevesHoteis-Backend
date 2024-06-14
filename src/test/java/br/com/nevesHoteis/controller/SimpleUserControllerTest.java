@@ -113,13 +113,10 @@ class SimpleUserControllerTest extends PeopleControllerTest<SimpleUser, SimpleUs
                 .andExpectAll(status().isNotFound());
     }
 
-    public SimpleUser randomSimpleUser(){
-        return new SimpleUser(1L, "Artur", LocalDate.now().plusYears(-18), "123.456.890-90", "73 988888888", randomAddress(), randomUser());
-    }
 
     @Override
     public SimpleUser randomT() {
-        return new SimpleUser(1L, "Artur", LocalDate.now().plusYears(-18), "123.456.890-90", "73 988888888", randomAddress(), randomUser());
+        return new SimpleUser(1L, "Artur", LocalDate.now().plusYears(-18), "123.456.890-90", "73988888888", randomAddress(), randomUser());
     }
     @Override
     public Address randomAddress(){
@@ -127,6 +124,6 @@ class SimpleUserControllerTest extends PeopleControllerTest<SimpleUser, SimpleUs
     }
     @Override
     public User randomUser(){
-        return new User(1L, "artur@gmail.com", "123", Role.USER);
+        return new User(1L, "artur@gmail.com", "Ar606060", Role.USER);
     }
 }

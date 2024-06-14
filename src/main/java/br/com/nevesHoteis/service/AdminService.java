@@ -4,7 +4,10 @@ import br.com.nevesHoteis.domain.Admin;
 import br.com.nevesHoteis.domain.Dto.PeopleDto;
 import br.com.nevesHoteis.domain.Dto.PeopleUpdateDto;
 import br.com.nevesHoteis.domain.Admin;
+import br.com.nevesHoteis.domain.People;
 import br.com.nevesHoteis.domain.SimpleUser;
+import br.com.nevesHoteis.domain.validation.People.ValidatePeople;
+import br.com.nevesHoteis.domain.validation.User.ValidateUser;
 import br.com.nevesHoteis.repository.AdminRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,12 +16,18 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class AdminService implements PeopleService<Admin> {
     @Autowired
     private AdminRepository repository;
     @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    private List<ValidateUser> validateUsers;
+    @Autowired
+    private List<ValidatePeople> validatePeople;
     @Override
     public Page<Admin> findAll(Pageable pageable) {
         return repository.findAll(pageable);
@@ -26,7 +35,9 @@ public class AdminService implements PeopleService<Admin> {
 
     @Override
     public Admin save(PeopleDto peopleDto) {
-        Admin admin= repository.save(new Admin(peopleDto));
+        Admin adminDto = new Admin(peopleDto);
+        validate(adminDto);
+        Admin admin= repository.save(adminDto);
         admin.passwordEncoder();
         return admin;
     }
@@ -34,6 +45,7 @@ public class AdminService implements PeopleService<Admin> {
     @Override
     public Admin update(long id, PeopleUpdateDto dto) {
         Admin adminDto = new Admin(dto);
+        validate(adminDto);
         Admin admin = findById(id);
         return (Admin) admin.merge(adminDto);
     }
@@ -46,5 +58,9 @@ public class AdminService implements PeopleService<Admin> {
     @Override
     public void delete(Long id) {
         repository.delete(findById(id));
+    }
+    public void validate(People people){
+        validatePeople.forEach(b ->b.validate(people));
+        validateUsers.forEach(b-> b.validate(people.getUser()));
     }
 }

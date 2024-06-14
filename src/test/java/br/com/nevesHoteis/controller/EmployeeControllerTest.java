@@ -93,7 +93,7 @@ public class EmployeeControllerTest extends PeopleControllerTest<Employee, Emplo
 
     @Override
     public Employee randomT() {
-        return new Employee(1L, "Artur", LocalDate.now().plusYears(-18), "123.456.890-90", "73 988888888", randomAddress(), randomUser());
+        return new Employee(1L, "Artur", LocalDate.now().plusYears(-18), "123.456.890-90", "73988888888", randomAddress(), randomUser());
     }
 
     @Override
@@ -103,6 +103,6 @@ public class EmployeeControllerTest extends PeopleControllerTest<Employee, Emplo
 
     @Override
     public User randomUser() {
-        return new User(1L, "artur@gmail.com", "123", Role.EMPLOYEE);
+        return new User(1L, "artur@gmail.com", "Ar606060", Role.EMPLOYEE);
     }
 }

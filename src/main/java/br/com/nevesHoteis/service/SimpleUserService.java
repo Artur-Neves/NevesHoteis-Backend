@@ -5,6 +5,8 @@ import br.com.nevesHoteis.domain.Dto.PeopleUpdateDto;
 import br.com.nevesHoteis.domain.People;
 import br.com.nevesHoteis.domain.SimpleUser;
 import br.com.nevesHoteis.domain.User;
+import br.com.nevesHoteis.domain.validation.People.ValidatePeople;
+import br.com.nevesHoteis.domain.validation.User.ValidateUser;
 import br.com.nevesHoteis.repository.SimpleUserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,25 +18,36 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 public class SimpleUserService implements PeopleService<SimpleUser> {
     @Autowired
     private SimpleUserRepository repository;
     @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    private List<ValidateUser> validateUsers;
+    @Autowired
+    private List<ValidatePeople> validatePeople;
+
 
     public Page<SimpleUser> findAll(Pageable pageable){
         return repository.findAll(pageable);
     }
     @Transactional
     public SimpleUser save(PeopleDto peopleDto) {
-        SimpleUser simpleUser= repository.save(new SimpleUser(peopleDto));
-        simpleUser.passwordEncoder();
-        return simpleUser;
+        SimpleUser simpleUser = new SimpleUser(peopleDto);
+        validate(simpleUser);
+        SimpleUser userEntity = repository.save(simpleUser);
+        userEntity.passwordEncoder();
+        return userEntity;
     }
     @Transactional
     public SimpleUser update(long id, PeopleUpdateDto peopleUpdateDto) {
         SimpleUser simpleUserDto = new SimpleUser(peopleUpdateDto);
+        validate(simpleUserDto);
         SimpleUser simpleUser = findById(id);
         return (SimpleUser) simpleUser.merge(simpleUserDto);
     }
@@ -45,10 +58,10 @@ public class SimpleUserService implements PeopleService<SimpleUser> {
     public void delete(Long id) {
         repository.delete(findById(id));
     }
-//    public SimpleUser constructorDto(PeopleDto peopleDto){
-//        return new SimpleUser(peopleDto);
-//    }
-//    public SimpleUser constructorDto(PeopleUpdateDto peopleUpdateDto){
-//        return new SimpleUser(peopleUpdateDto);
-//    }
+
+    public void validate(People people){
+        validatePeople.forEach(b ->b.validate(people));
+        validateUsers.forEach(b-> b.validate(people.getUser()));
+    }
+
 }
