@@ -9,6 +9,8 @@ import br.com.nevesHoteis.domain.validation.People.ValidatePeople;
 import br.com.nevesHoteis.domain.validation.User.ValidateUser;
 import br.com.nevesHoteis.repository.SimpleUserRepository;
 import jakarta.persistence.EntityNotFoundException;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -27,8 +29,10 @@ public class SimpleUserService implements PeopleService<SimpleUser> {
     private SimpleUserRepository repository;
     @Autowired
     private PasswordEncoder passwordEncoder;
+    @Setter
     @Autowired
     private List<ValidateUser> validateUsers;
+    @Setter
     @Autowired
     private List<ValidatePeople> validatePeople;
 
@@ -37,16 +41,13 @@ public class SimpleUserService implements PeopleService<SimpleUser> {
         return repository.findAll(pageable);
     }
     @Transactional
-    public SimpleUser save(PeopleDto peopleDto) {
-        SimpleUser simpleUser = new SimpleUser(peopleDto);
+    public SimpleUser save(People simpleUser) {
         validate(simpleUser);
-        SimpleUser userEntity = repository.save(simpleUser);
-        userEntity.passwordEncoder();
-        return userEntity;
+        simpleUser.passwordEncoder();
+        return repository.save((SimpleUser) simpleUser);
     }
     @Transactional
-    public SimpleUser update(long id, PeopleUpdateDto peopleUpdateDto) {
-        SimpleUser simpleUserDto = new SimpleUser(peopleUpdateDto);
+    public SimpleUser update(long id, People simpleUserDto) {
         validate(simpleUserDto);
         SimpleUser simpleUser = findById(id);
         return (SimpleUser) simpleUser.merge(simpleUserDto);
@@ -63,5 +64,6 @@ public class SimpleUserService implements PeopleService<SimpleUser> {
         validatePeople.forEach(b ->b.validate(people));
         validateUsers.forEach(b-> b.validate(people.getUser()));
     }
+
 
 }

@@ -5,6 +5,7 @@ import br.com.nevesHoteis.domain.Dto.PeopleCompleteDto;
 import br.com.nevesHoteis.domain.Dto.PeopleDto;
 import br.com.nevesHoteis.domain.Dto.PeopleUpdateDto;
 import br.com.nevesHoteis.service.EmployeeService;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.data.domain.Page;
@@ -25,10 +26,18 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class EmployeeControllerTest extends PeopleControllerTest<Employee, EmployeeService>{
+    private Employee employee = new Employee();
+    private Address address = new Address();
+    private User user = new User();
+    @BeforeEach
+    void setUp() {
+        user = new User(1L, "artur@gmail.com", "Ar606060", Role.EMPLOYEE);
+        address = new Address(1L, "76854-245", "BA", "Jequié", "Beira rio", "Rua Portugual");
+        employee = new Employee(1L, "Artur", LocalDate.now().plusYears(-18), "123.456.890-90", "73988888888", address, user);
+    }
     @Test
     @DisplayName("testando o selecionar")
     void test01() throws Exception {
-        Employee employee= randomT();
         Page<Employee> page = new PageImpl<>(List.of(employee));
         when(service.findAll(any())).thenReturn(page);
         mockMvc.perform(get("/employee"))
@@ -42,7 +51,6 @@ public class EmployeeControllerTest extends PeopleControllerTest<Employee, Emplo
     @Test
     @DisplayName("testando o selecionar")
     void test02() throws Exception {
-        Employee employee = randomT();
         when(service.save(any())).thenReturn(employee);
         mockMvc.perform(post("/employee")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -54,20 +62,18 @@ public class EmployeeControllerTest extends PeopleControllerTest<Employee, Emplo
     @Test
     @DisplayName("")
     void test03() throws Exception{
-        Employee T = randomT();
-        when(service.update(anyLong(), any())).thenReturn(T);
-        mockMvc.perform(put("/employee/"+T.getId())
+        when(service.update(anyLong(), any())).thenReturn(employee);
+        mockMvc.perform(put("/employee/"+employee.getId())
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(dtoJacksonTester.write(new PeopleDto(T)).getJson()))
+                        .content(dtoJacksonTester.write(new PeopleDto(employee)).getJson()))
                 .andExpectAll(status().isOk(),
                         content().contentType(MediaType.APPLICATION_JSON),
-                        content().json(updateDtoJacksonTester.write( new PeopleUpdateDto(T)).getJson()));
+                        content().json(updateDtoJacksonTester.write( new PeopleUpdateDto(employee)).getJson()));
     }
 
     @Test
     @DisplayName("")
     void test04() throws Exception{
-        Employee employee =randomT();
         when(service.findById(anyLong())).thenReturn(employee);
         mockMvc.perform(
                         get("/employee/"+employee.getId()))
@@ -91,18 +97,5 @@ public class EmployeeControllerTest extends PeopleControllerTest<Employee, Emplo
                 .andExpectAll(status().isNotFound());
     }
 
-    @Override
-    public Employee randomT() {
-        return new Employee(1L, "Artur", LocalDate.now().plusYears(-18), "123.456.890-90", "73988888888", randomAddress(), randomUser());
-    }
 
-    @Override
-    public Address randomAddress() {
-        return new Address(1L, "76854-245", "BA", "Jequié", "Beira rio", "Rua Portugual");
-    }
-
-    @Override
-    public User randomUser() {
-        return new User(1L, "artur@gmail.com", "Ar606060", Role.EMPLOYEE);
-    }
 }

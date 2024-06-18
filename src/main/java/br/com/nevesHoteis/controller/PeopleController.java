@@ -21,12 +21,17 @@ import org.springframework.web.util.UriComponentsBuilder;
 import java.net.URI;
 import java.util.function.Function;
 
+import static br.com.nevesHoteis.infra.factory.PeopleFactory.createdNewPeople;
 
-public class PeopleController <T extends People, S extends PeopleService<T>> {
+
+public class PeopleController <T extends People, S extends PeopleService<T> > {
     @Autowired
     private S service;
+    private T t;
 
-
+    public PeopleController(T t) {
+        this.t = t;
+    }
 
     @GetMapping()
     ResponseEntity<Page<PeopleCompleteDto>> findAll(@PageableDefault(size = 10) Pageable pageable){
@@ -34,13 +39,13 @@ public class PeopleController <T extends People, S extends PeopleService<T>> {
     }
     @PostMapping
     ResponseEntity<PeopleCompleteDto> save(@RequestBody @Valid PeopleDto dto, UriComponentsBuilder uriComponentsBuilder){
-        People people = service.save(dto);
+        People people = service.save( createdNewPeople(t.getClass() , dto));
         URI uri = uriComponentsBuilder.path("{id}").buildAndExpand(people).toUri();
         return ResponseEntity.created(uri).body( new PeopleCompleteDto(people));
     }
     @PutMapping("/{id}")
     ResponseEntity<PeopleCompleteDto> update(@RequestBody @Valid PeopleUpdateDto dto, @PathVariable Long id){
-        return ResponseEntity.ok(new PeopleCompleteDto(service.update(id, dto)));
+        return ResponseEntity.ok(new PeopleCompleteDto(service.update(id, createdNewPeople( t.getClass() , dto))));
     }
     @GetMapping("/{id}")
     ResponseEntity<PeopleCompleteDto> findById(@PathVariable Long id){

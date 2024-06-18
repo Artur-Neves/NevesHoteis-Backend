@@ -10,4 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/admin")
 @RestController
 public class AdminController extends PeopleController<Admin, AdminService> {
+    public AdminController() {
+        super(new Admin());
+    }
 }

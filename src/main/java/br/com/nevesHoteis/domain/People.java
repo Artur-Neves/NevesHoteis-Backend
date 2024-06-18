@@ -15,6 +15,7 @@ import java.time.LocalDate;
 import java.util.Date;
 @MappedSuperclass
 @Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public  class People {
@@ -23,7 +24,6 @@ public  class People {
     protected Long id;
     protected String name;
     protected LocalDate birthDay;
-    @Setter
     protected String cpf;
     protected String phone;
     @OneToOne( cascade = CascadeType.ALL)

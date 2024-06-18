@@ -38,6 +38,12 @@ public class User implements UserDetails {
         this.password = dto.password();
     }
 
+    public User(String login, String password, Role role) {
+        this.login=login;
+        this.password=password;
+        this.role=role;
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(role);

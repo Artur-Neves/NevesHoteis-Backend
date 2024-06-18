@@ -10,4 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/employee")
 @RestController
 public class EmployeeController extends PeopleController<Employee, EmployeeService> {
+    public EmployeeController() {
+        super(new Employee());
+    }
 }

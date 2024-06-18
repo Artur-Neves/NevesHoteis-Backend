@@ -17,22 +17,16 @@ import java.util.Date;
 @Service
 public class TokenService {
     public String createdToken(User user){
-        try {
             Algorithm algorithm = Algorithm.HMAC256("Testing");
             return JWT.create()
                     .withIssuer("Neves Hoteis")
                     .withSubject(user.getLogin())
-                    .withExpiresAt(getDataExpires())
+                    .withExpiresAt(getDataExpires(2 ))
                     .sign(algorithm);
-
-        } catch (JWTCreationException exception){
-            exception.printStackTrace();
-            throw new JWTVerificationException("");
-        }
     }
 
-    private Instant getDataExpires() {
-        return LocalDateTime.now().plusHours(2).toInstant(ZoneOffset.of("-03:00"));
+    protected Instant getDataExpires(int hoursValid) {
+        return LocalDateTime.now().plusHours(hoursValid).toInstant(ZoneOffset.of("-03:00"));
     }
 
     public String verify(String token){

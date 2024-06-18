@@ -7,4 +7,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/simple-user")
 @RestController
 public class SimpleUserController extends PeopleController<SimpleUser, SimpleUserService> {
+    public SimpleUserController() {
+        super(new SimpleUser());
+    }
 }

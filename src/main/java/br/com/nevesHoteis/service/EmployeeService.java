@@ -10,11 +10,14 @@ import br.com.nevesHoteis.domain.validation.People.ValidatePeople;
 import br.com.nevesHoteis.domain.validation.User.ValidateUser;
 import br.com.nevesHoteis.repository.EmployeeRepository;
 import jakarta.persistence.EntityNotFoundException;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -25,8 +28,10 @@ public class EmployeeService implements PeopleService<Employee> {
     @Autowired
     private PasswordEncoder passwordEncoder;
     @Autowired
+    @Setter
     private List<ValidateUser> validateUsers;
     @Autowired
+    @Setter
     private List<ValidatePeople> validatePeople;
     @Override
     public Page<Employee> findAll(Pageable pageable) {
@@ -34,17 +39,15 @@ public class EmployeeService implements PeopleService<Employee> {
     }
 
     @Override
-    public Employee save(PeopleDto peopleDto){
-        Employee employeeDto = new Employee(peopleDto);
+    public Employee save(People employeeDto){
         validate(employeeDto);
-        Employee employee= repository.save(employeeDto);
-        employee.passwordEncoder();
-        return employee;
+        employeeDto.passwordEncoder();
+        return repository.save((Employee) employeeDto);
     }
 
     @Override
-    public Employee update(long id, PeopleUpdateDto dto) {
-        Employee employeeDto = new Employee(dto);
+    @Transactional
+    public Employee update(long id, People employeeDto) {
         validate(employeeDto);
         Employee employee = findById(id);
         return (Employee) employee.merge(employeeDto);

@@ -9,6 +9,7 @@ import br.com.nevesHoteis.service.SimpleUserService;
 import br.com.nevesHoteis.service.UserService;
 import com.fasterxml.jackson.databind.annotation.JacksonStdImpl;
 import org.checkerframework.checker.units.qual.A;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -46,11 +47,19 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class SimpleUserControllerTest extends PeopleControllerTest<SimpleUser, SimpleUserService> {
 
+    private SimpleUser simpleUser = new SimpleUser();
+    private Address address = new Address();
+    private User user = new User();
+    @BeforeEach
+    void setUp() {
+        user = new User(1L, "artur@gmail.com", "Ar606060", Role.USER);
+        address = new Address(1L, "76854-245", "BA", "Jequié", "Beira rio", "Rua Portugual");
+        simpleUser = new SimpleUser(1L, "Artur", LocalDate.now().plusYears(-18), "123.456.890-90", "73988888888", address, user);
+    }
 
     @Test
     @DisplayName("testando o selecionar")
     void test01() throws Exception {
-        SimpleUser simpleUser= randomT();
         Page<SimpleUser> page = new PageImpl<>(List.of(simpleUser));
         when(service.findAll(any())).thenReturn(page);
         mockMvc.perform(get("/simple-user"))
@@ -64,7 +73,6 @@ class SimpleUserControllerTest extends PeopleControllerTest<SimpleUser, SimpleUs
     @Test
     @DisplayName("testando o selecionar")
     void test02() throws Exception {
-        SimpleUser simpleUser = randomT();
         when(service.save(any())).thenReturn(simpleUser);
         mockMvc.perform(post("/simple-user")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -76,20 +84,19 @@ class SimpleUserControllerTest extends PeopleControllerTest<SimpleUser, SimpleUs
     @Test
     @DisplayName("")
     void test03() throws Exception{
-        SimpleUser T = randomT();
-        when(service.update(anyLong(), any())).thenReturn(T);
-        mockMvc.perform(put("/simple-user/"+T.getId())
+
+        when(service.update(anyLong(), any())).thenReturn(simpleUser);
+        mockMvc.perform(put("/simple-user/"+simpleUser.getId())
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(dtoJacksonTester.write(new PeopleDto(T)).getJson()))
+                        .content(dtoJacksonTester.write(new PeopleDto(simpleUser)).getJson()))
                 .andExpectAll(status().isOk(),
                         content().contentType(MediaType.APPLICATION_JSON),
-                        content().json(updateDtoJacksonTester.write( new PeopleUpdateDto(T)).getJson()));
+                        content().json(updateDtoJacksonTester.write( new PeopleUpdateDto(simpleUser)).getJson()));
     }
 
     @Test
     @DisplayName("")
     void test04() throws Exception{
-        SimpleUser simpleUser =randomT();
         when(service.findById(anyLong())).thenReturn(simpleUser);
         mockMvc.perform(
                         get("/simple-user/"+simpleUser.getId()))
@@ -113,17 +120,4 @@ class SimpleUserControllerTest extends PeopleControllerTest<SimpleUser, SimpleUs
                 .andExpectAll(status().isNotFound());
     }
 
-
-    @Override
-    public SimpleUser randomT() {
-        return new SimpleUser(1L, "Artur", LocalDate.now().plusYears(-18), "123.456.890-90", "73988888888", randomAddress(), randomUser());
-    }
-    @Override
-    public Address randomAddress(){
-        return new Address(1L, "76854-245", "BA", "Jequié", "Beira rio", "Rua Portugual");
-    }
-    @Override
-    public User randomUser(){
-        return new User(1L, "artur@gmail.com", "Ar606060", Role.USER);
-    }
 }

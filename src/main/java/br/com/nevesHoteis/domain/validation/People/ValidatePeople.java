@@ -5,4 +5,6 @@ import br.com.nevesHoteis.domain.User;
 
 public interface ValidatePeople {
      void validate(People people);
+
+
 }

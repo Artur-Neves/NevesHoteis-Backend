@@ -10,11 +10,14 @@ import br.com.nevesHoteis.domain.validation.People.ValidatePeople;
 import br.com.nevesHoteis.domain.validation.User.ValidateUser;
 import br.com.nevesHoteis.repository.AdminRepository;
 import jakarta.persistence.EntityNotFoundException;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -25,8 +28,10 @@ public class AdminService implements PeopleService<Admin> {
     @Autowired
     private PasswordEncoder passwordEncoder;
     @Autowired
+    @Setter
     private List<ValidateUser> validateUsers;
     @Autowired
+    @Setter
     private List<ValidatePeople> validatePeople;
     @Override
     public Page<Admin> findAll(Pageable pageable) {
@@ -34,17 +39,15 @@ public class AdminService implements PeopleService<Admin> {
     }
 
     @Override
-    public Admin save(PeopleDto peopleDto) {
-        Admin adminDto = new Admin(peopleDto);
+    public Admin save(People adminDto) {
         validate(adminDto);
-        Admin admin= repository.save(adminDto);
-        admin.passwordEncoder();
-        return admin;
+        adminDto.passwordEncoder();
+        return repository.save((Admin) adminDto);
     }
 
     @Override
-    public Admin update(long id, PeopleUpdateDto dto) {
-        Admin adminDto = new Admin(dto);
+    @Transactional
+    public Admin update(long id, People adminDto) {
         validate(adminDto);
         Admin admin = findById(id);
         return (Admin) admin.merge(adminDto);

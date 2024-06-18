@@ -36,15 +36,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@SpringBootTest
-@ExtendWith(MockitoExtension.class)
-@AutoConfigureJsonTesters
-@AutoConfigureMockMvc
-public abstract class PeopleControllerTest<T extends People, S extends PeopleService<T>> {
-    @Autowired
-    protected MockMvc mockMvc;
-    @MockBean
-    protected S service;
+
+public abstract class PeopleControllerTest<T extends People, S > extends BaseControllerTest<S>  {
     @Autowired
     protected JacksonTester<PeopleCompleteDto> completeDtoJacksonTester;
     @Autowired
@@ -55,8 +48,5 @@ public abstract class PeopleControllerTest<T extends People, S extends PeopleSer
     protected JacksonTester<Page<PeopleCompleteDto>> pageCompleteDtoJacksonTester;
 
 
-    public abstract T randomT();
-    public abstract Address randomAddress();
-    public abstract User randomUser();
 
 }

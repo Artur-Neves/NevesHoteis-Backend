@@ -4,10 +4,15 @@ import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.InternalAuthenticationServiceException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import javax.security.sasl.AuthenticationException;
+import java.nio.file.AccessDeniedException;
 import java.sql.SQLException;
 
 @ControllerAdvice
@@ -18,17 +23,35 @@ public class ExceptionAdvice {
     }
     @ExceptionHandler(MethodArgumentNotValidException.class)
     ResponseEntity<?> methordArgument(MethodArgumentNotValidException e){
-        return ResponseEntity.badRequest().body( new erroFormation(e.getFieldError().getField(), e.getFieldError().getDefaultMessage()));
+        return ResponseEntity.badRequest().body( new ErrorFormation(e.getFieldError().getField(), e.getFieldError().getDefaultMessage()));
     }
     @ExceptionHandler(HttpMessageNotReadableException.class)
     ResponseEntity<?> methordArgument(HttpMessageNotReadableException e){
-        return ResponseEntity.badRequest().body( new erroFormation("Error HTTP", e.getMessage() ));
+        return ResponseEntity.badRequest().body( new ErrorFormation("Error HTTP", e.getMessage() ));
     }
     @ExceptionHandler(SQLException.class)
     ResponseEntity<?> sqlException(SQLException e){
-        return ResponseEntity.badRequest().body( new erroFormation("Error SQL", e.getMessage() ));
+        return ResponseEntity.badRequest().body( new ErrorFormation("Error SQL", e.getMessage() ));
     }
-    private record erroFormation(
+    @ExceptionHandler(ValidateUserException.class)
+    ResponseEntity<?> validateUserException(ValidateUserException e){
+        return ResponseEntity.badRequest().body(new ErrorFormation(e.getField(), e.getMessage()));
+    }
+    @ExceptionHandler(AuthenticationException.class)
+    ResponseEntity<?> validateUserException(AuthenticationException e){
+        return ResponseEntity.badRequest().body(new ErrorFormation("Authenticação falhou", e.getMessage()));
+    }
+    @ExceptionHandler(AccessDeniedException.class)
+    ResponseEntity<?> acessDeined(Exception e){
+        return ResponseEntity.status(403).body(new ErrorFormation("error", e.getMessage()));
+    }
+    @ExceptionHandler({BadCredentialsException.class, UsernameNotFoundException.class, InternalAuthenticationServiceException.class})
+    ResponseEntity<?> erroCredenciais(Exception e){
+        return ResponseEntity.badRequest().body(new ErrorFormation("Login", "Credenciais inválidas"));
+    }
+
+
+    private record ErrorFormation(
             String field,
             String message
     ){

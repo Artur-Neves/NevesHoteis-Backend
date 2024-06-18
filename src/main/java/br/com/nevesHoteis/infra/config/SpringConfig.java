@@ -35,7 +35,7 @@ public class SpringConfig {
                 .sessionManagement(ses-> ses.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(req->{
                     req.requestMatchers(HttpMethod.GET, "/hotel/**").permitAll();
-                    req.requestMatchers("/login").permitAll();
+                    req.requestMatchers(HttpMethod.POST, "/login").permitAll();
                     req.anyRequest().permitAll();
                 })
                 .addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class)
