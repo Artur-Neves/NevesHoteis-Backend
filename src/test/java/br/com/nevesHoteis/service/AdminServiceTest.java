@@ -1,29 +1,16 @@
 package br.com.nevesHoteis.service;
 
 import br.com.nevesHoteis.domain.*;
-import br.com.nevesHoteis.domain.Dto.PeopleDto;
-import br.com.nevesHoteis.domain.Dto.PeopleUpdateDto;
-import br.com.nevesHoteis.domain.validation.People.ValidateBirthdayPeople;
-import br.com.nevesHoteis.domain.validation.People.ValidateCpfPeople;
-import br.com.nevesHoteis.domain.validation.People.ValidatePeople;
-import br.com.nevesHoteis.domain.validation.User.ValidatePasswordUser;
-import br.com.nevesHoteis.domain.validation.User.ValidateUser;
 import br.com.nevesHoteis.repository.AdminRepository;
-import br.com.nevesHoteis.repository.EmployeeRepository;
 import jakarta.persistence.EntityNotFoundException;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Spy;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 
-import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -77,7 +64,7 @@ class AdminServiceTest extends PeopleServiceTest<Admin> {
         when(repository.save(any())).thenReturn(tMock);
         assertEquals(tMock, service.save(tMock));
         then(repository).should().save(any());
-        then(tMock).should().passwordEncoder();
+        then(tMock).should().getUser().passwordEncoder();
         then(validateUsers).should().forEach(any());
         then(validatePeoples).should().forEach(any());
     }

@@ -1,18 +1,16 @@
 package br.com.nevesHoteis.domain;
 
-import br.com.nevesHoteis.domain.Dto.PeopleDto;
-import br.com.nevesHoteis.domain.Dto.PeopleUpdateDto;
+import br.com.nevesHoteis.controller.Dto.PeopleDto;
+import br.com.nevesHoteis.controller.Dto.PeopleUpdateDto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.security.crypto.bcrypt.BCrypt;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDate;
-import java.util.Date;
+
 @MappedSuperclass
 @Getter
 @Setter
@@ -26,7 +24,7 @@ public  class People {
     protected LocalDate birthDay;
     protected String cpf;
     protected String phone;
-    @OneToOne( cascade = CascadeType.ALL)
+    @Embedded
     protected Address address;
     @OneToOne( cascade = CascadeType.ALL)
     protected User user;
@@ -57,15 +55,12 @@ public  class People {
         this.phone = people.getPhone();
         this.address.merge(people.getAddress());
         this.user.merge(people.getUser());
-        passwordEncoder();
         return this;
     }
 
 
 
 
-    public void passwordEncoder(){
-        this.user.setPassword(BCrypt.hashpw(this.user.getPassword(), BCrypt.gensalt()));
-    }
+
 
 }

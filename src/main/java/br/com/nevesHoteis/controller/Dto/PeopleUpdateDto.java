@@ -1,19 +1,12 @@
-package br.com.nevesHoteis.domain.Dto;
+package br.com.nevesHoteis.controller.Dto;
 
-import br.com.nevesHoteis.domain.Address;
 import br.com.nevesHoteis.domain.People;
-import br.com.nevesHoteis.domain.User;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Lob;
-import jakarta.persistence.OneToOne;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
-import org.springframework.cglib.core.Local;
 
 import java.time.LocalDate;
-import java.util.Date;
 
-public record PeopleDto(
+public record PeopleUpdateDto(
         @NotBlank
         @Size(min = 3, max = 60)
         String name,
@@ -31,10 +24,10 @@ public record PeopleDto(
         AddressDto address,
         @NotNull
         @Valid
-        LoginDto user
+        UserUpdateDto user
 ) {
-    public PeopleDto(People people){
-        this(people.getName(), people.getBirthDay(), people.getCpf(),
-             people.getPhone(), new AddressDto(people.getAddress()), new LoginDto(people.getUser()));
+    public PeopleUpdateDto(People people){
+        this( people.getName(), people.getBirthDay(), people.getCpf(),
+                people.getPhone(), new AddressDto(people.getAddress()), new UserUpdateDto(people.getUser()));
     }
 }

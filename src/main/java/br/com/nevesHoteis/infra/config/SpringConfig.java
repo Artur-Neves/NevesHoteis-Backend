@@ -1,8 +1,5 @@
 package br.com.nevesHoteis.infra.config;
 
-import br.com.nevesHoteis.domain.Dto.PeopleDto;
-import br.com.nevesHoteis.domain.Dto.PeopleUpdateDto;
-import br.com.nevesHoteis.domain.SimpleUser;
 import br.com.nevesHoteis.infra.filter.AuthenticationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -20,9 +17,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import java.security.Security;
-import java.util.function.Function;
-
 @Configuration
 @EnableWebSecurity
 public class SpringConfig {
@@ -34,8 +28,9 @@ public class SpringConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(ses-> ses.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(req->{
-                    req.requestMatchers(HttpMethod.GET, "/hotel/**").permitAll();
-                    req.requestMatchers(HttpMethod.POST, "/login").permitAll();
+                    req.requestMatchers(HttpMethod.GET, "/hotel/**", "/user/exist-user").permitAll();
+                    req.requestMatchers(HttpMethod.POST, "/user/login", "/simple-user/create-simple").permitAll();
+                    req.requestMatchers(HttpMethod.PUT, "/user/redefine-password");
                     req.anyRequest().permitAll();
                 })
                 .addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class)

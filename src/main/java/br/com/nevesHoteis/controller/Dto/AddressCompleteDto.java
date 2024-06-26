@@ -1,4 +1,4 @@
-package br.com.nevesHoteis.domain.Dto;
+package br.com.nevesHoteis.controller.Dto;
 
 import br.com.nevesHoteis.domain.Address;
 import jakarta.validation.constraints.NotBlank;
@@ -8,8 +8,6 @@ import jakarta.validation.constraints.Size;
 import org.apache.catalina.filters.AddDefaultCharsetFilter;
 
 public record AddressCompleteDto (
-        @NotNull
-        Long id,
      @Pattern(regexp = "\\d{5}-\\d{3}")
      @NotBlank
      String cep,
@@ -27,7 +25,7 @@ public record AddressCompleteDto (
      String propertyLocation){
 
     public AddressCompleteDto(Address address){
-        this(address.getId(), address.getCep(), address.getState(),
+        this( address.getCep(), address.getState(),
                  address.getCity(), address.getNeighborhood(), address.getPropertyLocation());
     }
 }

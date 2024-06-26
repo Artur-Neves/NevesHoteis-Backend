@@ -2,8 +2,8 @@ package br.com.nevesHoteis.controller;
 
 import br.com.nevesHoteis.domain.Address;
 
-import br.com.nevesHoteis.domain.Dto.HotelCompleteDto;
-import br.com.nevesHoteis.domain.Dto.HotelDto;
+import br.com.nevesHoteis.controller.Dto.HotelCompleteDto;
+import br.com.nevesHoteis.controller.Dto.HotelDto;
 import br.com.nevesHoteis.domain.Hotel;
 import br.com.nevesHoteis.service.HotelService;
 import org.junit.jupiter.api.DisplayName;
@@ -11,13 +11,11 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.json.JacksonTester;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.test.web.servlet.MockMvc;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -119,6 +117,6 @@ class HotelControllerTest extends BaseControllerTest<HotelService> {
         return new Hotel(1L, "Hotel fiveStars", LocalDateTime.now().plusWeeks(2), new BigDecimal(35), randomAddress());
     }
     private Address randomAddress(){
-        return new Address(1L, "45502-245", "BA", "Jequié", "Beira rio", "Rua Portugual");
+        return new Address( "45502-245", "BA", "Jequié", "Beira rio", "Rua Portugual");
     }
 }

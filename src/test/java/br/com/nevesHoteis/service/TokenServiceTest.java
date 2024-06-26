@@ -26,7 +26,7 @@ class TokenServiceTest {
     private User user= new User();
     @BeforeEach
     void setUp() {
-         user = new User(1L, "artur@gmail.com", "123", Role.EMPLOYEE);
+         user = new User(1L, "artur@gmail.com",true, "123", Role.EMPLOYEE, null);
     }
 
     @Test

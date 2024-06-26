@@ -1,10 +1,12 @@
 package br.com.nevesHoteis.infra.exeption;
 
+import jakarta.mail.MessagingException;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -33,21 +35,25 @@ public class ExceptionAdvice {
     ResponseEntity<?> sqlException(SQLException e){
         return ResponseEntity.badRequest().body( new ErrorFormation("Error SQL", e.getMessage() ));
     }
-    @ExceptionHandler(ValidateUserException.class)
-    ResponseEntity<?> validateUserException(ValidateUserException e){
+    @ExceptionHandler({ValidateUserException.class, EmailTokenException.class})
+    ResponseEntity<?> validateUserException(MyExceptions e){
         return ResponseEntity.badRequest().body(new ErrorFormation(e.getField(), e.getMessage()));
     }
     @ExceptionHandler(AuthenticationException.class)
     ResponseEntity<?> validateUserException(AuthenticationException e){
         return ResponseEntity.badRequest().body(new ErrorFormation("Authenticação falhou", e.getMessage()));
     }
-    @ExceptionHandler(AccessDeniedException.class)
+    @ExceptionHandler({AccessDeniedException.class, DisabledException.class})
     ResponseEntity<?> acessDeined(Exception e){
         return ResponseEntity.status(403).body(new ErrorFormation("error", e.getMessage()));
     }
     @ExceptionHandler({BadCredentialsException.class, UsernameNotFoundException.class, InternalAuthenticationServiceException.class})
-    ResponseEntity<?> erroCredenciais(Exception e){
+    ResponseEntity<?> invalidCredentials(Exception e){
         return ResponseEntity.badRequest().body(new ErrorFormation("Login", "Credenciais inválidas"));
+    }
+    @ExceptionHandler(MessagingException.class)
+    ResponseEntity<?> notSendEmail (Exception e){
+        return ResponseEntity.badRequest().body(new ErrorFormation("Email", "Erro ao tentar enviar o email"));
     }
 
 

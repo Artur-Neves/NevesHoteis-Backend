@@ -1,8 +1,8 @@
 package br.com.nevesHoteis.controller;
 
 
-import br.com.nevesHoteis.domain.Dto.LoginDto;
-import br.com.nevesHoteis.domain.Dto.TokenDto;
+import br.com.nevesHoteis.controller.Dto.LoginDto;
+import br.com.nevesHoteis.controller.Dto.TokenDto;
 import br.com.nevesHoteis.domain.Role;
 import br.com.nevesHoteis.domain.User;
 import br.com.nevesHoteis.service.TokenService;
@@ -17,8 +17,6 @@ import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
-
-import java.io.IOException;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;

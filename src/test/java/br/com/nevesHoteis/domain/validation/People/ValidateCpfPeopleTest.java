@@ -5,6 +5,7 @@ import br.com.nevesHoteis.domain.People;
 import br.com.nevesHoteis.domain.SimpleUser;
 import br.com.nevesHoteis.domain.User;
 import br.com.nevesHoteis.infra.exeption.ValidateUserException;
+import br.com.nevesHoteis.service.validation.People.ValidateCpfPeople;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

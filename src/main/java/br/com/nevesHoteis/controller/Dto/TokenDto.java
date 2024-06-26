@@ -1,4 +1,4 @@
-package br.com.nevesHoteis.domain.Dto;
+package br.com.nevesHoteis.controller.Dto;
 
 public record TokenDto(
         String token

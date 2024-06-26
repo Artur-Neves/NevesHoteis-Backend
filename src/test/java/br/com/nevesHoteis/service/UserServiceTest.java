@@ -10,6 +10,8 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.then;
@@ -22,13 +24,13 @@ class UserServiceTest {
     @Mock
     private UserRepository repository;
     @Mock
-    private UserDetails userDetails;
+    private User user;
 
     @Test
     @DisplayName("Testando o retorno do usuário")
     void test01(){
-        when(repository.findByLogin(any())).thenReturn(userDetails);
-        assertEquals(userDetails, service.loadUserByUsername("teste"));
+        when(repository.findByLogin(any())).thenReturn(Optional.of(user));
+        assertEquals(user, service.loadUserByUsername("teste"));
         then(repository).should().findByLogin(any());
     }
 

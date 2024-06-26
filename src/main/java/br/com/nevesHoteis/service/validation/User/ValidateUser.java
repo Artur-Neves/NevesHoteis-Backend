@@ -1,4 +1,4 @@
-package br.com.nevesHoteis.domain.validation.User;
+package br.com.nevesHoteis.service.validation.User;
 
 import br.com.nevesHoteis.domain.User;
 

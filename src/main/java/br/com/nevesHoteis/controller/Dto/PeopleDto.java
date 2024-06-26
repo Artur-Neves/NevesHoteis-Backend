@@ -1,13 +1,12 @@
-package br.com.nevesHoteis.domain.Dto;
+package br.com.nevesHoteis.controller.Dto;
 
 import br.com.nevesHoteis.domain.People;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
 
 import java.time.LocalDate;
-import java.util.Date;
 
-public record PeopleUpdateDto(
+public record PeopleDto(
         @NotBlank
         @Size(min = 3, max = 60)
         String name,
@@ -25,10 +24,10 @@ public record PeopleUpdateDto(
         AddressDto address,
         @NotNull
         @Valid
-        UserUpdateDto user
+        LoginDto user
 ) {
-    public PeopleUpdateDto(People people){
-        this( people.getName(), people.getBirthDay(), people.getCpf(),
-                people.getPhone(), new AddressDto(people.getAddress()), new UserUpdateDto(people.getUser()));
+    public PeopleDto(People people){
+        this(people.getName(), people.getBirthDay(), people.getCpf(),
+             people.getPhone(), new AddressDto(people.getAddress()), new LoginDto(people.getUser()));
     }
 }

@@ -1,8 +1,8 @@
 package br.com.nevesHoteis.controller;
 
-import br.com.nevesHoteis.domain.Dto.HotelCompleteDto;
+import br.com.nevesHoteis.controller.Dto.HotelCompleteDto;
 
-import br.com.nevesHoteis.domain.Dto.HotelDto;
+import br.com.nevesHoteis.controller.Dto.HotelDto;
 import br.com.nevesHoteis.domain.Hotel;
 import br.com.nevesHoteis.service.HotelService;
 import jakarta.validation.Valid;

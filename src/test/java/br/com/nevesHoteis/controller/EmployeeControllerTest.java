@@ -1,9 +1,9 @@
 package br.com.nevesHoteis.controller;
 
 import br.com.nevesHoteis.domain.*;
-import br.com.nevesHoteis.domain.Dto.PeopleCompleteDto;
-import br.com.nevesHoteis.domain.Dto.PeopleDto;
-import br.com.nevesHoteis.domain.Dto.PeopleUpdateDto;
+import br.com.nevesHoteis.controller.Dto.PeopleCompleteDto;
+import br.com.nevesHoteis.controller.Dto.PeopleDto;
+import br.com.nevesHoteis.controller.Dto.PeopleUpdateDto;
 import br.com.nevesHoteis.service.EmployeeService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -31,8 +31,8 @@ public class EmployeeControllerTest extends PeopleControllerTest<Employee, Emplo
     private User user = new User();
     @BeforeEach
     void setUp() {
-        user = new User(1L, "artur@gmail.com", "Ar606060", Role.EMPLOYEE);
-        address = new Address(1L, "76854-245", "BA", "Jequié", "Beira rio", "Rua Portugual");
+        user = new User(1L, "artur@gmail.com", true ,"Ar606060", Role.EMPLOYEE, null);
+        address = new Address( "76854-245", "BA", "Jequié", "Beira rio", "Rua Portugual");
         employee = new Employee(1L, "Artur", LocalDate.now().plusYears(-18), "123.456.890-90", "73988888888", address, user);
     }
     @Test

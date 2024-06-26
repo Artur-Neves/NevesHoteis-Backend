@@ -1,49 +1,28 @@
 package br.com.nevesHoteis.controller;
 
 import br.com.nevesHoteis.domain.*;
-import br.com.nevesHoteis.domain.Dto.PeopleCompleteDto;
-import br.com.nevesHoteis.domain.Dto.PeopleDto;
-import br.com.nevesHoteis.domain.Dto.PeopleUpdateDto;
-import br.com.nevesHoteis.service.PeopleService;
+import br.com.nevesHoteis.controller.Dto.PeopleCompleteDto;
+import br.com.nevesHoteis.controller.Dto.PeopleDto;
+import br.com.nevesHoteis.controller.Dto.PeopleUpdateDto;
 import br.com.nevesHoteis.service.SimpleUserService;
-import br.com.nevesHoteis.service.UserService;
-import com.fasterxml.jackson.databind.annotation.JacksonStdImpl;
-import org.checkerframework.checker.units.qual.A;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.json.AutoConfigureJsonTesters;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.json.JacksonTester;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.test.web.servlet.MockMvc;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class SimpleUserControllerTest extends PeopleControllerTest<SimpleUser, SimpleUserService> {
 
@@ -52,8 +31,8 @@ class SimpleUserControllerTest extends PeopleControllerTest<SimpleUser, SimpleUs
     private User user = new User();
     @BeforeEach
     void setUp() {
-        user = new User(1L, "artur@gmail.com", "Ar606060", Role.USER);
-        address = new Address(1L, "76854-245", "BA", "Jequié", "Beira rio", "Rua Portugual");
+        user = new User(1L, "artur@gmail.com",true , "Ar606060", Role.USER, null);
+        address = new Address( "76854-245", "BA", "Jequié", "Beira rio", "Rua Portugual");
         simpleUser = new SimpleUser(1L, "Artur", LocalDate.now().plusYears(-18), "123.456.890-90", "73988888888", address, user);
     }
 

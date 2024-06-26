@@ -1,13 +1,8 @@
 package br.com.nevesHoteis.infra.exeption;
 
-public class ValidateUserException extends RuntimeException {
-    private final String field;
-    public ValidateUserException(String field, String message) {
-        super(message);
-        this.field=field;
-    }
+public class ValidateUserException extends MyExceptions {
 
-    public String getField() {
-        return field;
+    public ValidateUserException(String field, String message) {
+        super(field, message);
     }
 }

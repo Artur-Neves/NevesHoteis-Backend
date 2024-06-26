@@ -1,7 +1,7 @@
 package br.com.nevesHoteis.domain;
 
 
-import br.com.nevesHoteis.domain.Dto.HotelDto;
+import br.com.nevesHoteis.controller.Dto.HotelDto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,11 +9,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
 
 @Entity
 @Getter
@@ -27,7 +24,7 @@ public class Hotel {
     private String name;
     private LocalDateTime availabilityDate;
     private BigDecimal dailyValue;
-    @OneToOne( cascade = CascadeType.ALL)
+    @Embedded
     private Address address;
     public Hotel(HotelDto dto){
        this.name= dto.name();

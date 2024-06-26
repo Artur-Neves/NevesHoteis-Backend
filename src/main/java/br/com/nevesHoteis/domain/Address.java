@@ -1,23 +1,17 @@
 package br.com.nevesHoteis.domain;
 
-import br.com.nevesHoteis.domain.Dto.AddressCompleteDto;
-import br.com.nevesHoteis.domain.Dto.AddressDto;
+import br.com.nevesHoteis.controller.Dto.AddressCompleteDto;
+import br.com.nevesHoteis.controller.Dto.AddressDto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
-
-@Entity
+@Embeddable
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
 public class Address {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
     private String cep;
     private String state;
     private String city;
@@ -32,7 +26,6 @@ public class Address {
         this.propertyLocation= dto.propertyLocation();
     }
     public Address(AddressCompleteDto dto) {
-        this.id= dto.id();
         this.cep=dto.cep();
         this.state= dto.state();
         this.city=dto.city();

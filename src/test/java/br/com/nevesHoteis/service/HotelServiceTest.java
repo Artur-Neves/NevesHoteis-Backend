@@ -1,10 +1,8 @@
 package br.com.nevesHoteis.service;
 
 import br.com.nevesHoteis.domain.Address;
-import br.com.nevesHoteis.domain.Dto.HotelDto;
 import br.com.nevesHoteis.domain.Hotel;
 import br.com.nevesHoteis.repository.HotelRepository;
-import com.sun.istack.Pool;
 import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -12,11 +10,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.test.context.support.WithMockUser;
 
 
 import java.math.BigDecimal;
@@ -90,6 +86,6 @@ class HotelServiceTest{
         return new Hotel(1L, "Hotel fiveStars", LocalDateTime.of(2024, 5, 3, 7, 36), new BigDecimal(35), randomAddress());
     }
     private Address randomAddress(){
-        return new Address(1L, "45502-245", "BA", "Jequié", "Beira rio", "Rua Portugual");
+        return new Address( "45502-245", "BA", "Jequié", "Beira rio", "Rua Portugual");
     }
 }

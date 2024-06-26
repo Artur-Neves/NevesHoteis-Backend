@@ -3,6 +3,7 @@ package br.com.nevesHoteis.domain.validation.User;
 import br.com.nevesHoteis.domain.Role;
 import br.com.nevesHoteis.domain.User;
 import br.com.nevesHoteis.infra.exeption.ValidateUserException;
+import br.com.nevesHoteis.service.validation.User.ValidatePasswordUser;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -48,6 +49,6 @@ class ValidatePasswordUserTest {
     }
 
     public User randomUser() {
-        return new User(1L, "artur@gmail.com", "Po890780", Role.USER);
+        return new User(1L, "artur@gmail.com",true, "Po890780", Role.USER, null);
     }
 }

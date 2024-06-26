@@ -1,12 +1,9 @@
-package br.com.nevesHoteis.domain.validation.People;
+package br.com.nevesHoteis.service.validation.People;
 
 import br.com.nevesHoteis.domain.People;
-import br.com.nevesHoteis.domain.User;
 import br.com.nevesHoteis.infra.exeption.ValidateUserException;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.List;
 @Component
 public class ValidateCpfPeople implements ValidatePeople{
 

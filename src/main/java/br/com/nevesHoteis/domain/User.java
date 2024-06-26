@@ -1,8 +1,8 @@
 package br.com.nevesHoteis.domain;
 
-import br.com.nevesHoteis.domain.Dto.LoginDto;
-import br.com.nevesHoteis.domain.Dto.UserDto;
-import br.com.nevesHoteis.domain.Dto.UserUpdateDto;
+import br.com.nevesHoteis.controller.Dto.LoginDto;
+import br.com.nevesHoteis.controller.Dto.UserDiscretDto;
+import br.com.nevesHoteis.controller.Dto.UserUpdateDto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 
 import java.util.*;
 @Entity
@@ -24,15 +25,24 @@ public class User implements UserDetails {
     @Column(unique = true)
     private String login;
     @Setter
+    private boolean enabled = false;
+    @Setter
     private String password;
     @Setter
     @Enumerated(EnumType.STRING)
     private Role role;
+    @OneToOne(cascade = CascadeType.REMOVE, mappedBy = "user")
+    private VerificationEmailToken verificationEmailToken;
 
     public User (LoginDto dto){
         this.login = dto.login();
         this.password = dto.password();
     }
+    public User (UserDiscretDto dto){
+        this.id = dto.id();
+        this.login = dto.login();
+    }
+
 
     public User(UserUpdateDto dto) {
         this.password = dto.password();
@@ -76,10 +86,20 @@ public class User implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return enabled;
     }
 
     public void merge(User user) {
         this.password=user.getPassword();
+        passwordEncoder();
+    }
+
+    public void redefinePassword(String newPassword) {
+        this.password=  newPassword;
+        passwordEncoder();
+    }
+
+    public void passwordEncoder() {
+      this.setPassword(BCrypt.hashpw(getPassword(), BCrypt.gensalt()));
     }
 }

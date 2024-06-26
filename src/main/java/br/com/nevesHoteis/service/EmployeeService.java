@@ -1,16 +1,11 @@
 package br.com.nevesHoteis.service;
 
-import br.com.nevesHoteis.domain.Dto.PeopleDto;
-import br.com.nevesHoteis.domain.Dto.PeopleUpdateDto;
-import br.com.nevesHoteis.domain.Employee;
 import br.com.nevesHoteis.domain.Employee;
 import br.com.nevesHoteis.domain.People;
-import br.com.nevesHoteis.domain.SimpleUser;
-import br.com.nevesHoteis.domain.validation.People.ValidatePeople;
-import br.com.nevesHoteis.domain.validation.User.ValidateUser;
+import br.com.nevesHoteis.service.validation.People.ValidatePeople;
+import br.com.nevesHoteis.service.validation.User.ValidateUser;
 import br.com.nevesHoteis.repository.EmployeeRepository;
 import jakarta.persistence.EntityNotFoundException;
-import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -41,7 +36,7 @@ public class EmployeeService implements PeopleService<Employee> {
     @Override
     public Employee save(People employeeDto){
         validate(employeeDto);
-        employeeDto.passwordEncoder();
+        employeeDto.getUser().passwordEncoder();
         return repository.save((Employee) employeeDto);
     }
 

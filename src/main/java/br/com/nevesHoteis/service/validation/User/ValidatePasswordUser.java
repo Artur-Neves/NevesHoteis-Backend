@@ -1,10 +1,9 @@
-package br.com.nevesHoteis.domain.validation.User;
+package br.com.nevesHoteis.service.validation.User;
 
 import br.com.nevesHoteis.domain.User;
 import br.com.nevesHoteis.infra.exeption.ValidateUserException;
 import org.springframework.stereotype.Component;
 
-import java.util.Arrays;
 @Component
 public class ValidatePasswordUser implements ValidateUser{
     @Override

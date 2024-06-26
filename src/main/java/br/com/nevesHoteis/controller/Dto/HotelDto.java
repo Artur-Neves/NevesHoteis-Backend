@@ -1,13 +1,11 @@
-package br.com.nevesHoteis.domain.Dto;
+package br.com.nevesHoteis.controller.Dto;
 
 import br.com.nevesHoteis.domain.Hotel;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
-import org.aspectj.lang.annotation.After;
 
 import java.math.BigDecimal;
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 public record HotelDto(

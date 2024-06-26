@@ -1,4 +1,4 @@
-package br.com.nevesHoteis.domain.Dto;
+package br.com.nevesHoteis.controller.Dto;
 
 import br.com.nevesHoteis.domain.Role;
 import br.com.nevesHoteis.domain.User;

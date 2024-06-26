@@ -1,4 +1,4 @@
-package br.com.nevesHoteis.domain.validation.People;
+package br.com.nevesHoteis.service.validation.People;
 
 import br.com.nevesHoteis.domain.People;
 import br.com.nevesHoteis.infra.exeption.ValidateUserException;

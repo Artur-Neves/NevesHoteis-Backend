@@ -1,8 +1,6 @@
-package br.com.nevesHoteis.domain.Dto;
+package br.com.nevesHoteis.controller.Dto;
 
-import br.com.nevesHoteis.domain.Address;
 import br.com.nevesHoteis.domain.Hotel;
-import jakarta.persistence.OneToOne;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;

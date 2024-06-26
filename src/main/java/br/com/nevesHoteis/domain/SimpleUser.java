@@ -1,15 +1,12 @@
 package br.com.nevesHoteis.domain;
 
-import br.com.nevesHoteis.domain.Dto.PeopleCompleteDto;
-import br.com.nevesHoteis.domain.Dto.PeopleDto;
-import br.com.nevesHoteis.domain.Dto.PeopleUpdateDto;
+import br.com.nevesHoteis.controller.Dto.PeopleDto;
+import br.com.nevesHoteis.controller.Dto.PeopleUpdateDto;
+import br.com.nevesHoteis.controller.Dto.SimpleUserDto;
 import jakarta.persistence.Entity;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
-import java.util.Date;
 
 @Entity()
 @Getter
@@ -30,6 +27,11 @@ public class SimpleUser extends People {
     }
     public SimpleUser(PeopleUpdateDto dto){
         super(dto);
+        setRole(Role.USER);
+    }
+    public SimpleUser (SimpleUserDto dto){
+        this.name=dto.name();
+        this.user= new User(dto.loginDto());
         setRole(Role.USER);
     }
 

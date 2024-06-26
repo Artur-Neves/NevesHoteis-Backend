@@ -2,9 +2,9 @@ package br.com.nevesHoteis.controller;
 
 import br.com.nevesHoteis.domain.Address;
 import br.com.nevesHoteis.domain.Admin;
-import br.com.nevesHoteis.domain.Dto.PeopleCompleteDto;
-import br.com.nevesHoteis.domain.Dto.PeopleDto;
-import br.com.nevesHoteis.domain.Dto.PeopleUpdateDto;
+import br.com.nevesHoteis.controller.Dto.PeopleCompleteDto;
+import br.com.nevesHoteis.controller.Dto.PeopleDto;
+import br.com.nevesHoteis.controller.Dto.PeopleUpdateDto;
 import br.com.nevesHoteis.domain.Role;
 import br.com.nevesHoteis.domain.User;
 import br.com.nevesHoteis.service.AdminService;
@@ -34,8 +34,8 @@ public class AdminControllerTest extends PeopleControllerTest<Admin, AdminServic
 
     @BeforeEach
     void setUp() {
-        user = new User(1L, "artur@gmail.com", "Ar606060", Role.ADMIN);
-        address = new Address(1L, "76854-245", "BA", "Jequié", "Beira rio", "Rua Portugual");
+        user = new User(1L, "artur@gmail.com", true , "Ar606060", Role.ADMIN, null);
+        address = new Address( "76854-245", "BA", "Jequié", "Beira rio", "Rua Portugual");
         admin = new Admin(1L, "Artur", LocalDate.now().plusYears(-18), "123.456.890-90", "73988888888", address, user);
     }
 

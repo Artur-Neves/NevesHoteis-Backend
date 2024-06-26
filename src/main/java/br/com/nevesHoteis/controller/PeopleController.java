@@ -1,32 +1,27 @@
 package br.com.nevesHoteis.controller;
 
-import br.com.nevesHoteis.domain.Dto.PeopleCompleteDto;
-import br.com.nevesHoteis.domain.Dto.PeopleDto;
-import br.com.nevesHoteis.domain.Dto.PeopleUpdateDto;
+import br.com.nevesHoteis.controller.Dto.PeopleCompleteDto;
+import br.com.nevesHoteis.controller.Dto.PeopleDto;
+import br.com.nevesHoteis.controller.Dto.PeopleUpdateDto;
 import br.com.nevesHoteis.domain.People;
-import br.com.nevesHoteis.domain.SimpleUser;
 import br.com.nevesHoteis.service.PeopleService;
-import br.com.nevesHoteis.service.SimpleUserService;
-import jakarta.persistence.MappedSuperclass;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
-import java.util.function.Function;
 
 import static br.com.nevesHoteis.infra.factory.PeopleFactory.createdNewPeople;
 
 
 public class PeopleController <T extends People, S extends PeopleService<T> > {
     @Autowired
-    private S service;
+    protected S service;
     private T t;
 
     public PeopleController(T t) {
