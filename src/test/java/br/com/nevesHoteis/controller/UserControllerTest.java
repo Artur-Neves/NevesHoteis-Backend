@@ -47,7 +47,7 @@ class UserControllerTest extends BaseControllerTest<UserService>{
         when(service.loadUserByUsername(any())).thenReturn(userDetails);
         when(manager.authenticate(any())).thenReturn(authentication);
         when(tokenService.createdToken(any())).thenReturn(token);
-        mockMvc.perform(post("/login")
+        mockMvc.perform(post("/user/login")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(loginDtoJacksonTester.write(new LoginDto(user)).getJson()))
                 .andExpectAll(status().isOk(),

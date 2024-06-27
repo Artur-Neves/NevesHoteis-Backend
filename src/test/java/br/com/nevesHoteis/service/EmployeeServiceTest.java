@@ -31,6 +31,8 @@ class EmployeeServiceTest  extends PeopleServiceTest<Employee> {
     private EmployeeRepository repository;
     @Mock
     private Employee tMock;
+    @Mock
+    private User userMock;
 
     public EmployeeServiceTest() {
         super(new Employee(), Role.USER);
@@ -62,9 +64,10 @@ class EmployeeServiceTest  extends PeopleServiceTest<Employee> {
     @Test
     void test04(){
         when(repository.save(any())).thenReturn(tMock);
+        when(tMock.getUser()).thenReturn(userMock);
         assertEquals(tMock, service.save(tMock));
         then(repository).should().save(any());
-        then(tMock).should().getUser().passwordEncoder();
+        then(userMock).should().passwordEncoder();
         then(validateUsers).should().forEach(any());
         then(validatePeoples).should().forEach(any());
     }

@@ -28,7 +28,8 @@ class SimpleUserServiceTest extends PeopleServiceTest<SimpleUser> {
     private SimpleUserRepository repository;
     @Mock
     private SimpleUser tMock;
-
+    @Mock
+    private User userMock;
     public SimpleUserServiceTest() {
         super(new SimpleUser(), Role.USER);
     }
@@ -59,9 +60,10 @@ class SimpleUserServiceTest extends PeopleServiceTest<SimpleUser> {
     @Test
     void test04(){
         when(repository.save(any())).thenReturn(tMock);
+        when(tMock.getUser()).thenReturn(userMock);
         assertEquals(tMock, service.save( tMock));
         then(repository).should().save(tMock);
-        then(tMock).should().getUser().passwordEncoder();
+        then(userMock).should().passwordEncoder();
         then(validateUsers).should().forEach(any());
         then(validatePeoples).should().forEach(any());
     }

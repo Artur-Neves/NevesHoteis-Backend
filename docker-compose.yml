@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+  nevesHoteis:
+    build:
+      context: .
+    environment:
+      - DB_URL=${DB_URL}
+      - DB_USERNAME=${DB_USERNAME}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - EMAIL_USERNAME=${EMAIL_USERNAME}
+      - EMAIL_PASSWORD=${EMAIL_PASSWORD}
+    ports:
+      - "8080:8080"
