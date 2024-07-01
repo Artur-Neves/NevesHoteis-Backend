@@ -19,11 +19,12 @@ public class VerificationEmailTokenController {
 
     @PostMapping("")
     ResponseEntity<?> createdOrResendEmail(@RequestBody @Valid TokenEmailDto tokenEmailDto) throws MessagingException, IOException {
-        return ResponseEntity.ok( new TimeTokenEmailDto(service.createdOrResend(tokenEmailDto).getTimeSecond()));
+        TimeTokenEmailDto responseDto = new TimeTokenEmailDto(service.createdOrResend(tokenEmailDto).getResendIntervalSeconds());
+        return ResponseEntity.ok( responseDto);
     }
     @PostMapping("/verify")
     ResponseEntity<?> verifyToken(@RequestBody @Valid TokenEmailDto tokenEmailDto){
         service.verify(tokenEmailDto);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 }

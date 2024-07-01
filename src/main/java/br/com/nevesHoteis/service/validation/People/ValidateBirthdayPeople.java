@@ -9,8 +9,7 @@ import java.time.LocalDate;
 public class ValidateBirthdayPeople implements ValidatePeople{
     @Override
     public void validate(People people) {
-
-    if (!(people.getBirthDay().isBefore(LocalDate.now().plusYears(-14)) && people.getBirthDay().isAfter(LocalDate.now().plusYears(-130)))){
+    if (!(people.getBirthDay().isBefore(LocalDate.now().plusYears(-13)) && people.getBirthDay().isAfter(LocalDate.now().plusYears(-131)))){
         throw new ValidateUserException("BirthDay", "Idade inválida");
     }
     }

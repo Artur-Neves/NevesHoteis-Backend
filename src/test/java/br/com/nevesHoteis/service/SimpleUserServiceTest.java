@@ -12,6 +12,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -97,4 +98,16 @@ class SimpleUserServiceTest extends PeopleServiceTest<SimpleUser> {
         service.delete(anyLong());
         then(repository).should().delete(any());
     }
+    @DisplayName("Testando o salvamento de um usuário simples")
+    @Test
+    void test07(){
+        service.setValidateUsers(Collections.singletonList(validatePasswordUser));
+        when(repository.save(any())).thenReturn(tMock);
+        when(tMock.getUser()).thenReturn(userMock);
+        assertEquals(tMock, service.simpleSave( tMock));
+        then(repository).should().save(tMock);
+        then(userMock).should().passwordEncoder();
+        verify(validatePasswordUser).validate(userMock);
+    }
+
 }

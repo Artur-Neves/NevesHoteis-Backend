@@ -13,4 +13,5 @@ public interface VerificationEmailTokenRepository extends JpaRepository<Verifica
     VerificationEmailToken findByUserId(Long id);
 
 
+    Optional<VerificationEmailToken> findByUserLogin(String login);
 }

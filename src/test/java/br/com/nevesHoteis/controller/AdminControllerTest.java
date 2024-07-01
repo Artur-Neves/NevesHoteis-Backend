@@ -40,7 +40,7 @@ public class AdminControllerTest extends PeopleControllerTest<Admin, AdminServic
     }
 
     @Test
-    @DisplayName("testando o selecionar")
+    @DisplayName("Testando o selecionamento de todos os admin")
     void test01() throws Exception {
         Page<Admin> page = new PageImpl<>(List.of(admin));
         when(service.findAll(any())).thenReturn(page);
@@ -53,7 +53,7 @@ public class AdminControllerTest extends PeopleControllerTest<Admin, AdminServic
 
     @WithMockUser
     @Test
-    @DisplayName("testando o selecionar")
+    @DisplayName("Testando o salvamento de um admin")
     void test02() throws Exception {
         when(service.save(any())).thenReturn(admin);
         mockMvc.perform(post("/admin")
@@ -65,7 +65,7 @@ public class AdminControllerTest extends PeopleControllerTest<Admin, AdminServic
     }
 
     @Test
-    @DisplayName("")
+    @DisplayName("Testando a atualização de um admin")
     void test03() throws Exception {
         when(service.update(anyLong(), any())).thenReturn(admin);
         mockMvc.perform(put("/admin/" + admin.getId())
@@ -77,7 +77,7 @@ public class AdminControllerTest extends PeopleControllerTest<Admin, AdminServic
     }
 
     @Test
-    @DisplayName("")
+    @DisplayName("Testando o selecionamento de um admin pelo id")
     void test04() throws Exception {
         when(service.findById(anyLong())).thenReturn(admin);
         mockMvc.perform(
@@ -88,7 +88,7 @@ public class AdminControllerTest extends PeopleControllerTest<Admin, AdminServic
     }
 
     @Test
-    @DisplayName("")
+    @DisplayName("Testando a exclusão de um admin")
     void test05() throws Exception {
         mockMvc.perform(
                         delete("/admin/" + 1))

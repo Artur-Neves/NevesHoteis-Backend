@@ -36,7 +36,7 @@ public class EmployeeControllerTest extends PeopleControllerTest<Employee, Emplo
         employee = new Employee(1L, "Artur", LocalDate.now().plusYears(-18), "123.456.890-90", "73988888888", address, user);
     }
     @Test
-    @DisplayName("testando o selecionar")
+    @DisplayName("Testando o selecionamento de todos os funcionários")
     void test01() throws Exception {
         Page<Employee> page = new PageImpl<>(List.of(employee));
         when(service.findAll(any())).thenReturn(page);
@@ -49,7 +49,7 @@ public class EmployeeControllerTest extends PeopleControllerTest<Employee, Emplo
 
     @WithMockUser
     @Test
-    @DisplayName("testando o selecionar")
+    @DisplayName("Testando o salvamento de um funcionário")
     void test02() throws Exception {
         when(service.save(any())).thenReturn(employee);
         mockMvc.perform(post("/employee")
@@ -60,7 +60,7 @@ public class EmployeeControllerTest extends PeopleControllerTest<Employee, Emplo
                         content().json(completeDtoJacksonTester.write( new PeopleCompleteDto(employee)).getJson()));
     }
     @Test
-    @DisplayName("")
+    @DisplayName("Testando a atualização de um funcionário")
     void test03() throws Exception{
         when(service.update(anyLong(), any())).thenReturn(employee);
         mockMvc.perform(put("/employee/"+employee.getId())
@@ -72,7 +72,7 @@ public class EmployeeControllerTest extends PeopleControllerTest<Employee, Emplo
     }
 
     @Test
-    @DisplayName("")
+    @DisplayName("Testando o selecionamento de um funcionário pelo id")
     void test04() throws Exception{
         when(service.findById(anyLong())).thenReturn(employee);
         mockMvc.perform(
@@ -82,7 +82,7 @@ public class EmployeeControllerTest extends PeopleControllerTest<Employee, Emplo
                         content().json(completeDtoJacksonTester.write(new PeopleCompleteDto(employee)).getJson()));
     }
     @Test
-    @DisplayName("")
+    @DisplayName("Testando a exclusão de um funcionário")
     void test05() throws Exception{
         mockMvc.perform(
                         delete("/employee/"+1))

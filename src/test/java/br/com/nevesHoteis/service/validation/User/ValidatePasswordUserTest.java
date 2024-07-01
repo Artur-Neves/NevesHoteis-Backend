@@ -1,4 +1,4 @@
-package br.com.nevesHoteis.domain.validation.User;
+package br.com.nevesHoteis.service.validation.User;
 
 import br.com.nevesHoteis.domain.Role;
 import br.com.nevesHoteis.domain.User;
@@ -23,13 +23,23 @@ class ValidatePasswordUserTest {
     void test01() {
         User user = randomUser();
         assertDoesNotThrow(()-> validate.validate(user));
-        user.setPassword("Po890780");
+        user.setPassword("Px890780");
         assertDoesNotThrow(()->validate.validate(user));
-        user.setPassword("Ar890423");
+        user.setPassword("0kdsjfJk");
+        assertDoesNotThrow(()->validate.validate(user));
+        user.setPassword("Pz989798");
+        assertDoesNotThrow(()->validate.validate(user));
+        user.setPassword("Aa890423");
         assertDoesNotThrow(()->validate.validate(user));
         user.setPassword("Xfidjsf2");
         assertDoesNotThrow(()->validate.validate(user));
         user.setPassword("Blabla12");
+        assertDoesNotThrow(()->validate.validate(user));
+        user.setPassword("Zfidjsf2");
+        assertDoesNotThrow(()->validate.validate(user));
+        user.setPassword("Alabla12");
+        assertDoesNotThrow(()->validate.validate(user));
+        user.setPassword("Alabla9j");
         assertDoesNotThrow(()->validate.validate(user));
     }
     @Test
@@ -42,7 +52,13 @@ class ValidatePasswordUserTest {
         assertThrows(ValidateUserException.class ,()->validate.validate(user));
         user.setPassword("ArturDes");
         assertThrows(ValidateUserException.class ,()->validate.validate(user));
-        user.setPassword("c1234566");
+        user.setPassword("a1234566");
+        assertThrows(ValidateUserException.class ,()->validate.validate(user));
+        user.setPassword("z1234566");
+        assertThrows(ValidateUserException.class ,()->validate.validate(user));
+        user.setPassword("A90B56C0");
+        assertThrows(ValidateUserException.class ,()->validate.validate(user));
+        user.setPassword("zfsdlfj0");
         assertThrows(ValidateUserException.class ,()->validate.validate(user));
         user.setPassword("A90B56C0");
         assertThrows(ValidateUserException.class ,()->validate.validate(user));

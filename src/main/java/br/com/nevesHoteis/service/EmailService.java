@@ -16,11 +16,12 @@ public class EmailService {
 
     @Autowired
     private JavaMailSender mailSender;
+    @Autowired
+    private MimeMessage message;
+    @Autowired
+    private MimeMessageHelper helper;
 
-    public void sendConfirmEmail(String recipient, String code) throws MessagingException, IOException {
-        MimeMessage message = mailSender.createMimeMessage();
-        MimeMessageHelper helper = new MimeMessageHelper(message, true);
-
+    public void sendConfirmEmail(String recipient, String code) throws MessagingException {
         helper.setTo(recipient);
         helper.setSubject("Código de Confirmação de Email");
         String htmlContent = buildHtmlContent(code);
@@ -29,11 +30,10 @@ public class EmailService {
         ClassPathResource logoImageMedia = new ClassPathResource("static/Logo_Original-Cortado-Tamanho-Medio.png");
         helper.addInline("logoImageOriginal", logoImageOriginal);
         helper.addInline("logoImageMedia", logoImageMedia);
-
         mailSender.send(message);
     }
 
-    private String buildHtmlContent(String code) {
+    protected String buildHtmlContent(String code) {
         return "<!DOCTYPE html>\n" +
                 "<html lang=\"pt-br\">\n" +
                 "<head>\n" +

@@ -6,6 +6,7 @@ import br.com.nevesHoteis.controller.Dto.HotelCompleteDto;
 import br.com.nevesHoteis.controller.Dto.HotelDto;
 import br.com.nevesHoteis.domain.Hotel;
 import br.com.nevesHoteis.service.HotelService;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -45,11 +46,19 @@ class HotelControllerTest extends BaseControllerTest<HotelService> {
     private HotelCompleteDto completeDto;
     @Mock
     private Hotel hotelMock;
+    private Hotel hotel;
+    private Address address;
+
+    @BeforeEach
+    void setUp() {
+        address =new Address( "45502-245", "BA", "Jequié", "Beira rio", "Rua Portugual");
+        hotel = new Hotel(1L, "Hotel fiveStars", LocalDateTime.now().plusWeeks(2), new BigDecimal(35), address);
+    }
 
     @Test
-    @DisplayName("Testando o find all dos hoteis")
+    @DisplayName("Testando o selecionamento de todos os hoteis")
     void test01() throws Exception {
-        Page<Hotel> hotelPage = new PageImpl<>(List.of(randomHotel()));
+        Page<Hotel> hotelPage = new PageImpl<>(List.of(hotel));
         given(service.findAll(any(Pageable.class))).willReturn(hotelPage);
         mockMvc.perform(get("/hotel"))
                 .andExpectAll(status().isOk(),
@@ -60,7 +69,6 @@ class HotelControllerTest extends BaseControllerTest<HotelService> {
     @Test
     @DisplayName("Testando o salvamento da entidade hotel")
     void test02() throws Exception {
-        Hotel hotel = randomHotel();
         given(service.save(any())).willReturn(hotel);
         hotelDto = new HotelDto(hotel);
         mockMvc.perform(post("/hotel")
@@ -72,9 +80,8 @@ class HotelControllerTest extends BaseControllerTest<HotelService> {
                         content().json(hotelCompleteDtoJacksonTester.write(new HotelCompleteDto(hotel)).getJson()));
     }
     @Test
-    @DisplayName("Selecionando apenas uma entidade ")
+    @DisplayName("Testando o selecionamento de apenas uma entidade hotel ")
     void test03() throws Exception {
-        Hotel hotel = randomHotel();
         given(service.findById(eq(hotel.getId()))).willReturn(hotel);
         mockMvc.perform(get("/hotel/"+hotel.getId())
                 )
@@ -92,7 +99,6 @@ class HotelControllerTest extends BaseControllerTest<HotelService> {
     @Test
     @DisplayName("Testando a atualização da entidade hotel")
     void test05() throws Exception {
-        Hotel hotel = randomHotel();
         hotelDto = new HotelDto(hotel);
         given(service.update(anyLong(), any(Hotel.class))).willReturn(hotel);
         mockMvc.perform(put("/hotel/"+hotel.getId())
@@ -105,18 +111,10 @@ class HotelControllerTest extends BaseControllerTest<HotelService> {
     }
     @WithMockUser
     @Test
-    @DisplayName("Testando o delete da entidade hotel")
+    @DisplayName("Testando a exclusão da entidade hotel")
     void test06() throws Exception {
-        Hotel hotel = randomHotel();
         mockMvc.perform(delete("/hotel/"+hotel.getId()))
                 .andExpectAll(status().isNoContent());
         then(service).should().delete(anyLong())   ;
-    }
-
-    private Hotel randomHotel(){
-        return new Hotel(1L, "Hotel fiveStars", LocalDateTime.now().plusWeeks(2), new BigDecimal(35), randomAddress());
-    }
-    private Address randomAddress(){
-        return new Address( "45502-245", "BA", "Jequié", "Beira rio", "Rua Portugual");
     }
 }

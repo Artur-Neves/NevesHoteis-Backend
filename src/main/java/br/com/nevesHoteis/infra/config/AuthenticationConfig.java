@@ -1,10 +1,14 @@
 package br.com.nevesHoteis.infra.config;
 
 import br.com.nevesHoteis.infra.filter.AuthenticationFilter;
+import jakarta.mail.MessagingException;
+import jakarta.mail.internet.MimeMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -19,7 +23,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableWebSecurity
-public class SpringConfig {
+public class AuthenticationConfig {
     @Autowired
     private AuthenticationFilter authenticationFilter;
     @Bean
@@ -36,18 +40,5 @@ public class SpringConfig {
                 .addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
-    @Bean
-    public PasswordEncoder passwordEncoder (){
-        return new BCryptPasswordEncoder();
-    }
-    @Bean
-    static RoleHierarchy roleHierarchy() {
-        return null;
-    }
-    @Bean
-    AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
-      return  configuration.getAuthenticationManager();
-    }
-
 
 }

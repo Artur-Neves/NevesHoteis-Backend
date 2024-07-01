@@ -3,6 +3,7 @@ package br.com.nevesHoteis.service;
 import br.com.nevesHoteis.domain.People;
 import br.com.nevesHoteis.domain.SimpleUser;
 import br.com.nevesHoteis.service.validation.People.ValidatePeople;
+import br.com.nevesHoteis.service.validation.User.ValidatePasswordUser;
 import br.com.nevesHoteis.service.validation.User.ValidateUser;
 import br.com.nevesHoteis.repository.SimpleUserRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -60,6 +61,7 @@ public class SimpleUserService implements PeopleService<SimpleUser> {
 
 
     public SimpleUser simpleSave(SimpleUser simpleUser) {
+        validateUsers.forEach(validateUser -> validateUser.validate(simpleUser.getUser()));
         simpleUser.getUser().passwordEncoder();
         return repository.save(simpleUser);
     }

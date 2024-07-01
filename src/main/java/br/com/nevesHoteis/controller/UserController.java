@@ -35,7 +35,7 @@ public class UserController {
     @PutMapping("/redefine-password")
     ResponseEntity<String> redefinePassword(@RequestBody @Valid  RedefinePasswordDto dto){
         service.redefinePassword(dto);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 
 }
