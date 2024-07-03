@@ -13,6 +13,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 @RestController
 @RequestMapping("/user")
 public class UserController {
@@ -23,10 +25,14 @@ public class UserController {
     @Autowired
     private UserService service;
     @PostMapping("/login")
-    ResponseEntity<?> login(@Valid @RequestBody LoginDto loginDto){
+    ResponseEntity<Map<String, String>> login(@Valid @RequestBody LoginDto loginDto){
         UsernamePasswordAuthenticationToken userToken= new UsernamePasswordAuthenticationToken(loginDto.login(), loginDto.password());
         Authentication authentication =manager.authenticate(userToken);
-        return ResponseEntity.ok(new TokenDto(tokenService.createdToken((User) authentication.getPrincipal())));
+        return ResponseEntity.ok(tokenService.tokensAfterLoginToken((User) authentication.getPrincipal()));
+    }
+    @PostMapping("/refresh")
+    ResponseEntity<?> refresh(@RequestBody TokenDto token){
+        return ResponseEntity.ok(new TokenDto(tokenService.refreshToken(token.token())));
     }
     @GetMapping("/{email}")
     ResponseEntity<?> findUserByLogin(@PathVariable String email){

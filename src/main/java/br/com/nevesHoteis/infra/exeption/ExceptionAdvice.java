@@ -1,5 +1,6 @@
 package br.com.nevesHoteis.infra.exeption;
 
+import com.auth0.jwt.exceptions.JWTVerificationException;
 import jakarta.mail.MessagingException;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
@@ -44,7 +45,7 @@ public class ExceptionAdvice {
         return ResponseEntity.badRequest().body(new ErrorFormation("Authenticação falhou", e.getMessage()));
     }
     @ExceptionHandler({AccessDeniedException.class, DisabledException.class})
-    ResponseEntity<?> acessDeined(Exception e){
+    ResponseEntity<?> accessDenied(Exception e){
         return ResponseEntity.status(403).body(new ErrorFormation("error", e.getMessage()));
     }
     @ExceptionHandler({BadCredentialsException.class, UsernameNotFoundException.class, InternalAuthenticationServiceException.class})

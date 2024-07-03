@@ -26,7 +26,7 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
+@WithMockUser(authorities = "ADMIN")
 public class AdminControllerTest extends PeopleControllerTest<Admin, AdminService> {
     private Admin admin = new Admin();
     private Address address = new Address();
@@ -38,7 +38,7 @@ public class AdminControllerTest extends PeopleControllerTest<Admin, AdminServic
         address = new Address( "76854-245", "BA", "Jequié", "Beira rio", "Rua Portugual");
         admin = new Admin(1L, "Artur", LocalDate.now().plusYears(-18), "123.456.890-90", "73988888888", address, user);
     }
-
+    @WithMockUser(authorities = "ADMIN")
     @Test
     @DisplayName("Testando o selecionamento de todos os admin")
     void test01() throws Exception {

@@ -2,11 +2,13 @@ package br.com.nevesHoteis.infra.filter;
 
 import br.com.nevesHoteis.service.TokenService;
 import br.com.nevesHoteis.service.UserService;
+import com.auth0.jwt.exceptions.JWTVerificationException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
@@ -34,7 +36,7 @@ public class AuthenticationFilter extends OncePerRequestFilter {
             context.setAuthentication(authentication);
             SecurityContextHolder.setContext(context);
         }
-        doFilter(request, response, filterChain);
+        filterChain.doFilter(request, response);
     }
 
     private String getToken(HttpServletRequest request) {

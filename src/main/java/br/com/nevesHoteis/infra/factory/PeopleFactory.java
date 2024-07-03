@@ -38,7 +38,6 @@ public class PeopleFactory {
         }
     }
     public static <T> People createdNewPeople(Class<T> a, PeopleUpdateDto peopleUpdateDto){
-        System.out.println(a);
         if (a== SimpleUser.class){
             return new SimpleUser(peopleUpdateDto);
 
