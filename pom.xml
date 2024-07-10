@@ -128,12 +128,13 @@
 				</dependencies>
 				<configuration>
 					<targetClasses>
-
+						<param>br.com.nevesHoteis.controller.*</param>
 						<param>br.com.nevesHoteis.service.*</param>
 					</targetClasses>
 					<targetTests>
 
 						<param>br.com.nevesHoteis.service.*</param>
+						<param>br.com.nevesHoteis.controller.*</param>
 					</targetTests>
 				</configuration>
 

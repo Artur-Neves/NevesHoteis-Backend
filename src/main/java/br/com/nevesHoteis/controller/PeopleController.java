@@ -39,7 +39,7 @@ public class PeopleController <T extends People, S extends PeopleService<T> > {
         return ResponseEntity.created(uri).body( new PeopleCompleteDto(people));
     }
     @PutMapping("/{id}")
-    ResponseEntity<PeopleCompleteDto> update(@RequestBody @Valid PeopleUpdateDto dto, @PathVariable Long id){
+    ResponseEntity<PeopleCompleteDto> update(@RequestBody @Valid PeopleUpdateDto dto, @PathVariable String id){
         return ResponseEntity.ok(new PeopleCompleteDto(service.update(id, createdNewPeople( t.getClass() , dto))));
     }
     @GetMapping("/{id}")

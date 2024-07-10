@@ -1,12 +1,11 @@
 package br.com.nevesHoteis.controller.Dto;
 
 import br.com.nevesHoteis.domain.People;
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
 
 import java.time.LocalDate;
 
-public record PeopleUpdateDto(
+public record PeoplePersonalDataDto(
         @NotBlank
         @Size(min = 3, max = 60)
         String name,
@@ -18,13 +17,9 @@ public record PeopleUpdateDto(
         String cpf,
         @NotBlank
         @Pattern(regexp = "\\d{11}")
-        String phone,
-        @NotNull
-        @Valid
-        AddressDto address
-) {
-    public PeopleUpdateDto(People people){
+        String phone) {
+    public PeoplePersonalDataDto(People people){
         this( people.getName(), people.getBirthDay(), people.getCpf(),
-                people.getPhone(), new AddressDto(people.getAddress()));
+                people.getPhone());
     }
 }

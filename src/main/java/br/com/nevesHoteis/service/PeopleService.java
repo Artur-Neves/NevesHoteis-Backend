@@ -15,11 +15,20 @@ public interface PeopleService <T extends People> {
     public Page<T> findAll(Pageable pageable);
     public T save(People people);
     @Transactional
-    public T update(long id, People people);
+    public T update(String idOrLogin, People people);
     public T findById(Long id);
     public void delete(Long id);
     public void validate(People people);
     public void setValidatePeople(List<ValidatePeople> b);
     public void setValidateUsers(List<ValidateUser> a);
+    public T findByUserLogin(String login);
+    default T findByIdOrLogin(String idOrLogin){
+        try {
+            return findById(Long.parseLong(idOrLogin));
+        }
+        catch (NumberFormatException e){
+            return findByUserLogin(idOrLogin);
+        }
+    }
 
 }

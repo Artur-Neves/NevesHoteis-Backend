@@ -41,9 +41,9 @@ public class SimpleUserService implements PeopleService<SimpleUser> {
         return repository.save((SimpleUser) simpleUser);
     }
     @Transactional
-    public SimpleUser update(long id, People simpleUserDto) {
-        validate(simpleUserDto);
-        SimpleUser simpleUser = findById(id);
+    public SimpleUser update(String id, People simpleUserDto) {
+        validatePeople.forEach(b -> b.validate(simpleUserDto));
+        SimpleUser simpleUser = findByIdOrLogin(id);
         return (SimpleUser) simpleUser.merge(simpleUserDto);
     }
     public SimpleUser findById(Long id){
@@ -59,10 +59,15 @@ public class SimpleUserService implements PeopleService<SimpleUser> {
         validateUsers.forEach(b-> b.validate(people.getUser()));
     }
 
+    @Override
+    public SimpleUser findByUserLogin(String login) {
+        return repository.findByUserLogin(login).orElseThrow(()->new EntityNotFoundException("Entity not found"));
+    }
 
     public SimpleUser simpleSave(SimpleUser simpleUser) {
         validateUsers.forEach(validateUser -> validateUser.validate(simpleUser.getUser()));
         simpleUser.getUser().passwordEncoder();
         return repository.save(simpleUser);
     }
+
 }

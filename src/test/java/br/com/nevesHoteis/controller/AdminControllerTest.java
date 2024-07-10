@@ -38,7 +38,6 @@ public class AdminControllerTest extends PeopleControllerTest<Admin, AdminServic
         address = new Address( "76854-245", "BA", "Jequié", "Beira rio", "Rua Portugual");
         admin = new Admin(1L, "Artur", LocalDate.now().plusYears(-18), "123.456.890-90", "73988888888", address, user);
     }
-    @WithMockUser(authorities = "ADMIN")
     @Test
     @DisplayName("Testando o selecionamento de todos os admin")
     void test01() throws Exception {
@@ -51,7 +50,6 @@ public class AdminControllerTest extends PeopleControllerTest<Admin, AdminServic
     }
 
 
-    @WithMockUser
     @Test
     @DisplayName("Testando o salvamento de um admin")
     void test02() throws Exception {
@@ -67,10 +65,10 @@ public class AdminControllerTest extends PeopleControllerTest<Admin, AdminServic
     @Test
     @DisplayName("Testando a atualização de um admin")
     void test03() throws Exception {
-        when(service.update(anyLong(), any())).thenReturn(admin);
+        when(service.update(any(), any())).thenReturn(admin);
         mockMvc.perform(put("/admin/" + admin.getId())
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(dtoJacksonTester.write(new PeopleDto(admin)).getJson()))
+                        .content(updateDtoJacksonTester.write(new PeopleUpdateDto(admin)).getJson()))
                 .andExpectAll(status().isOk(),
                         content().contentType(MediaType.APPLICATION_JSON),
                         content().json(updateDtoJacksonTester.write(new PeopleUpdateDto(admin)).getJson()));

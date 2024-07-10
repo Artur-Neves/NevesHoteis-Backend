@@ -68,14 +68,24 @@ class SimpleUserServiceTest extends PeopleServiceTest<SimpleUser> {
         then(validateUsers).should().forEach(any());
         then(validatePeoples).should().forEach(any());
     }
-    @DisplayName("Testando a atualização da entidade usuario")
+    @DisplayName("Testando a atualização da entidade usando o id")
     @Test
     void test05(){
+        service.setValidatePeople(Arrays.asList(validateBirthdayPeople, validateCpfPeople));
         when(repository.findById(anyLong())).thenReturn(Optional.of(tMock));
         when(tMock.merge(any())).thenReturn(t);
-        assertEquals(t, service.update(t.getId(), tMock));
+        assertEquals(t, service.update(""+t.getId(),  t));
         then(tMock).should().merge(any());
-        then(validateUsers).should().forEach(any());
+        verify(validateBirthdayPeople).validate(t);
+        verify(validateCpfPeople).validate(t);
+    }
+    @DisplayName("Testando a atualização da entidade usando o login")
+    @Test
+    void test06(){
+        when(repository.findByUserLogin(any())).thenReturn(Optional.of(tMock));
+        when(tMock.merge(any())).thenReturn(t);
+        assertEquals(t, service.update(t.getUser().getLogin(),  t));
+        then(tMock).should().merge(any());
         then(validatePeoples).should().forEach(any());
     }
     @Test
@@ -93,14 +103,14 @@ class SimpleUserServiceTest extends PeopleServiceTest<SimpleUser> {
     }
     @DisplayName("Testando a exclusão da entidade usuario")
     @Test
-    void test06(){
+    void test07(){
         when(repository.findById(anyLong())).thenReturn(Optional.of(tMock));
         service.delete(anyLong());
         then(repository).should().delete(any());
     }
     @DisplayName("Testando o salvamento de um usuário simples")
     @Test
-    void test07(){
+    void test08(){
         service.setValidateUsers(Collections.singletonList(validatePasswordUser));
         when(repository.save(any())).thenReturn(tMock);
         when(tMock.getUser()).thenReturn(userMock);
@@ -108,6 +118,20 @@ class SimpleUserServiceTest extends PeopleServiceTest<SimpleUser> {
         then(repository).should().save(tMock);
         then(userMock).should().passwordEncoder();
         verify(validatePasswordUser).validate(userMock);
+    }
+    @DisplayName("Testando a seleção de um usuário simples pelo login")
+    @Test
+    void test09(){
+        when(repository.findByUserLogin(any())).thenReturn(Optional.of(t));
+        assertEquals(t ,service.findByUserLogin(t.getUser().getLogin()));
+        then(repository).should().findByUserLogin(any());
+    }
+    @DisplayName("Testando erro ao não achar um usuário simples pelo login")
+    @Test
+    void test10(){
+        when(repository.findByUserLogin(any())).thenReturn(Optional.empty());
+        assertThrows(EntityNotFoundException.class,()-> service.findByIdOrLogin(t.getUser().getLogin()));
+        then(repository).should().findByUserLogin(any());
     }
 
 }

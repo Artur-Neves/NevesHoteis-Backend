@@ -43,7 +43,6 @@ public class User implements UserDetails {
         this.login = dto.login();
     }
 
-
     public User(UserUpdateDto dto) {
         this.password = dto.password();
     }

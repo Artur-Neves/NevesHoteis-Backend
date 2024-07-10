@@ -22,6 +22,5 @@ public class Admin extends People {
     }
     public Admin(PeopleUpdateDto dto){
         super(dto);
-        setRole(Role.ADMIN);
     }
 }

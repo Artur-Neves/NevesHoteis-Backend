@@ -2,12 +2,12 @@ package br.com.nevesHoteis.service;
 
 import br.com.nevesHoteis.controller.Dto.RedefinePasswordDto;
 import br.com.nevesHoteis.controller.Dto.TokenEmailDto;
-import br.com.nevesHoteis.domain.Role;
-import br.com.nevesHoteis.domain.User;
+import br.com.nevesHoteis.domain.*;
 import br.com.nevesHoteis.infra.exeption.ValidateUserException;
 import br.com.nevesHoteis.repository.UserRepository;
 import br.com.nevesHoteis.service.validation.User.ValidateUser;
 import jakarta.persistence.EntityNotFoundException;
+import org.checkerframework.checker.units.qual.A;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -18,17 +18,27 @@ import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+import static br.com.nevesHoteis.domain.Role.ADMIN;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class UserServiceTest {
@@ -37,9 +47,29 @@ class UserServiceTest {
     @Mock
     private UserRepository repository;
     @Mock
+    private SimpleUserService simpleUserRepository;
+    @Mock
+    private EmployeeService employeeRepository;
+    @Mock
+    private AdminService adminRepository;
+    @Mock
     private VerificationEmailTokenService verificationEmailTokenService;
     @Mock
     private User userMock;
+    @Mock
+    private Authentication authentication;
+    @Mock
+    private UserDetails userDetailsMock;
+    @Mock
+    private SimpleUser simpleUser;
+    @Mock
+    private Employee employee;
+    @Mock
+    private Admin admin;
+
+    @Mock
+    private SecurityContext securityContext;
+
 
     @Test
     @DisplayName("Testando o retorno do usuário")
@@ -77,6 +107,70 @@ class UserServiceTest {
     void test05(){
         RedefinePasswordDto redefinePasswordDto = new RedefinePasswordDto("artur@gmail.com", "newPassword1", "newPassword2", "Tokens");
         assertThrows(ValidateUserException.class, ()->service.redefinePassword(redefinePasswordDto));
+    }
+    @Test
+    @DisplayName("Testando a busca dos dados de um userSimples pelo login")
+    void test06(){
+        SecurityContextHolder.setContext(securityContext);
+        Authentication authenticationUser = new UsernamePasswordAuthenticationToken("teste@gmal.com", "", List.of(Role.USER));
+        when(SecurityContextHolder.getContext().getAuthentication()).thenReturn(authenticationUser);
+        when(simpleUserRepository.findByUserLogin(any())).thenReturn(simpleUser);
+        assertEquals(simpleUser,  service.findPeopleByLogin());
+    }
+    @Test
+    @DisplayName("Testando a busca dos dados de um funcionário pelo login")
+    void test07(){
+        SecurityContextHolder.setContext(securityContext);
+        Authentication authenticationEmployee = new UsernamePasswordAuthenticationToken("teste@gmal.com", "", List.of(Role.EMPLOYEE));
+        when(SecurityContextHolder.getContext().getAuthentication()).thenReturn(authenticationEmployee);
+        when(employeeRepository.findByUserLogin(any())).thenReturn(employee);
+        assertEquals(employee,  service.findPeopleByLogin());
+    }
+    @Test
+    @DisplayName("Testando a busca dos dados de um admin pelo login")
+    void test08(){
+        SecurityContextHolder.setContext(securityContext);
+        Authentication authenticationAdmin = new UsernamePasswordAuthenticationToken("teste@gmal.com", "", List.of(ADMIN));
+        when(SecurityContextHolder.getContext().getAuthentication()).thenReturn(authenticationAdmin);
+        when(adminRepository.findByUserLogin(any())).thenReturn(admin);
+        assertEquals(admin,  service.findPeopleByLogin());
+    }
+    @Test
+    @DisplayName("Testando retorno de um erro ao não passar um perfil")
+    void test09(){
+        SecurityContextHolder.setContext(securityContext);
+        Authentication authenticationAdmin = new UsernamePasswordAuthenticationToken("teste@gmal.com", "", List.of());
+        when(SecurityContextHolder.getContext().getAuthentication()).thenReturn(authenticationAdmin);
+
+        assertThrows(ValidateUserException.class, ()->  service.findPeopleByLogin());
+    }
+
+@Test
+@DisplayName("Testando a atualização de um userSimples pelo login")
+void test10(){
+    SecurityContextHolder.setContext(securityContext);
+    Authentication authenticationUser = new UsernamePasswordAuthenticationToken("teste@gmal.com", "", List.of(Role.USER));
+    when(SecurityContextHolder.getContext().getAuthentication()).thenReturn(authenticationUser);
+    when(simpleUserRepository.update(any(), any())).thenReturn(simpleUser);
+    assertEquals(simpleUser,  service.updateMyAccount(simpleUser));
+}
+    @Test
+    @DisplayName("Testando a atualização dos dados de um funcionário pelo login")
+    void test11(){
+        SecurityContextHolder.setContext(securityContext);
+        Authentication authenticationEmployee = new UsernamePasswordAuthenticationToken("teste@gmal.com", "", List.of(Role.EMPLOYEE));
+        when(SecurityContextHolder.getContext().getAuthentication()).thenReturn(authenticationEmployee);
+        when(employeeRepository.update(any(), any())).thenReturn(employee);
+        assertEquals(employee,  service.updateMyAccount(employee));
+    }
+    @Test
+    @DisplayName("Testando a atualização dos dados de um admin pelo login")
+    void test12(){
+        SecurityContextHolder.setContext(securityContext);
+        Authentication authenticationAdmin = new UsernamePasswordAuthenticationToken("teste@gmal.com", "", List.of(ADMIN));
+        when(SecurityContextHolder.getContext().getAuthentication()).thenReturn(authenticationAdmin);
+        when(adminRepository.update(any(), any())).thenReturn(admin);
+        assertEquals(admin,  service.updateMyAccount(admin));
     }
 
 }

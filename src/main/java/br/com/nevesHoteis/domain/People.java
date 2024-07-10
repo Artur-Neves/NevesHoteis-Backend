@@ -1,6 +1,8 @@
 package br.com.nevesHoteis.domain;
 
+import br.com.nevesHoteis.controller.Dto.PeopleAddressDataDto;
 import br.com.nevesHoteis.controller.Dto.PeopleDto;
+import br.com.nevesHoteis.controller.Dto.PeoplePersonalDataDto;
 import br.com.nevesHoteis.controller.Dto.PeopleUpdateDto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -43,7 +45,20 @@ public  class People {
         this.cpf = dto.cpf();
         this.phone = dto.phone();
         this.address = new Address(dto.address());
-        this.user = new User(dto.user());
+    }
+
+    public People(PeoplePersonalDataDto dto) {
+        this.name = dto.name();
+        this.birthDay = dto.birthDay();
+        this.cpf = dto.cpf();
+        this.phone = dto.phone();
+    }
+    public People(PeopleAddressDataDto dto) {
+        this.name = dto.name();
+        this.birthDay = dto.birthDay();
+        this.cpf = dto.cpf();
+        this.phone = dto.phone();
+        this.address = new Address(dto.address());
     }
     public void setRole(Role role){
         this.user.setRole(role);
@@ -53,8 +68,12 @@ public  class People {
         this.birthDay = people.getBirthDay();
         this.cpf = people.getCpf();
         this.phone = people.getPhone();
-        this.address.merge(people.getAddress());
-        this.user.merge(people.getUser());
+        if(people.getAddress()!=null) {
+            if (this.address==null){
+                this.address = new Address();
+            }
+            this.address.merge(people.getAddress());
+        }
         return this;
     }
 

@@ -19,6 +19,7 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -30,7 +31,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-
+@WithMockUser(authorities = "EMPLOYEE")
 class HotelControllerTest extends BaseControllerTest<HotelService> {
     @Mock
     private Pageable pageable;
@@ -52,9 +53,9 @@ class HotelControllerTest extends BaseControllerTest<HotelService> {
     @BeforeEach
     void setUp() {
         address =new Address( "45502-245", "BA", "Jequié", "Beira rio", "Rua Portugual");
-        hotel = new Hotel(1L, "Hotel fiveStars", LocalDateTime.now().plusWeeks(2), new BigDecimal(35), address);
+        hotel = new Hotel(1L, "Hotel fiveStars", LocalDate.now().plusWeeks(2), new BigDecimal(35), address);
     }
-
+    @WithMockUser
     @Test
     @DisplayName("Testando o selecionamento de todos os hoteis")
     void test01() throws Exception {
@@ -65,7 +66,7 @@ class HotelControllerTest extends BaseControllerTest<HotelService> {
                         content().contentType(MediaType.APPLICATION_JSON),
                         content().json(pageHotelCompleteDto.write(hotelPage.map(HotelCompleteDto::new)).getJson()));
     }
-    @WithMockUser
+
     @Test
     @DisplayName("Testando o salvamento da entidade hotel")
     void test02() throws Exception {
@@ -95,7 +96,6 @@ class HotelControllerTest extends BaseControllerTest<HotelService> {
         mockMvc.perform(get("/hotel/"))
                 .andExpectAll(status().isNotFound());
     }
-    @WithMockUser
     @Test
     @DisplayName("Testando a atualização da entidade hotel")
     void test05() throws Exception {
@@ -109,7 +109,6 @@ class HotelControllerTest extends BaseControllerTest<HotelService> {
                         content().contentType(MediaType.APPLICATION_JSON),
                         content().json(hotelCompleteDtoJacksonTester.write(new HotelCompleteDto(hotel)).getJson()));
     }
-    @WithMockUser
     @Test
     @DisplayName("Testando a exclusão da entidade hotel")
     void test06() throws Exception {

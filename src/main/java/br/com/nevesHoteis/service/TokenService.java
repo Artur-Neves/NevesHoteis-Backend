@@ -7,6 +7,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -18,11 +19,14 @@ import java.util.Map;
 
 @Service
 public class TokenService {
-    Algorithm algorithm = Algorithm.HMAC256("Testing");
-    Algorithm algorithmRefresh = Algorithm.HMAC256("Testing");
+    @Value("${br.com.nevesHoteis.secretAlgorithmToken}")
+    private String secretAlgorithm;
+    @Value("${br.com.nevesHoteis.secretAlgorithmRefreshToken}")
+    private String secretRefreshAlgorithm;
     final int TIME_TOKEN = 2;
     final int TIME_REFRESH_TOKEN = 30 * 24;
     public String createdToken(User user){
+        Algorithm algorithm = Algorithm.HMAC256(secretAlgorithm);
             return JWT.create()
                     .withIssuer("Neves Hoteis")
                     .withSubject(user.getLogin())
@@ -31,6 +35,7 @@ public class TokenService {
                     .sign(algorithm);
     }
     public String createdToken(String login, String role){
+        Algorithm algorithm = Algorithm.HMAC256(secretAlgorithm);
         return JWT.create()
                 .withIssuer("Neves Hoteis")
                 .withSubject(login)
@@ -44,6 +49,7 @@ public class TokenService {
         return createdToken(user.getSubject(), user.getClaim("role").asString());
     }
     public String createdRefreshToken(User user){
+        Algorithm algorithmRefresh = Algorithm.HMAC256(secretRefreshAlgorithm);
         return JWT.create()
                 .withIssuer("Neves Hoteis")
                 .withSubject(user.getLogin())
@@ -55,6 +61,7 @@ public class TokenService {
         return LocalDateTime.now().plusHours(hoursValid).toInstant(ZoneOffset.of("-03:00"));
     }
     public String verify(String token){
+        Algorithm algorithm = Algorithm.HMAC256(secretAlgorithm);
         try {
            return JWT.require(algorithm)
                     .withIssuer("Neves Hoteis")
@@ -66,6 +73,7 @@ public class TokenService {
         }
     }
     public void verifyRefresh(String token){
+        Algorithm algorithmRefresh = Algorithm.HMAC256(secretRefreshAlgorithm);
         try {
              JWT.require(algorithmRefresh)
                     .withIssuer("Neves Hoteis")

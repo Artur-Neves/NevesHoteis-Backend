@@ -2,6 +2,7 @@ package br.com.nevesHoteis.service;
 
 import br.com.nevesHoteis.domain.Employee;
 import br.com.nevesHoteis.domain.People;
+import br.com.nevesHoteis.domain.SimpleUser;
 import br.com.nevesHoteis.service.validation.People.ValidatePeople;
 import br.com.nevesHoteis.service.validation.User.ValidateUser;
 import br.com.nevesHoteis.repository.EmployeeRepository;
@@ -28,13 +29,14 @@ public class EmployeeService implements PeopleService<Employee> {
     @Autowired
     @Setter
     private List<ValidatePeople> validatePeople;
+
     @Override
     public Page<Employee> findAll(Pageable pageable) {
         return repository.findAll(pageable);
     }
 
     @Override
-    public Employee save(People employeeDto){
+    public Employee save(People employeeDto) {
         validate(employeeDto);
         employeeDto.getUser().passwordEncoder();
         return repository.save((Employee) employeeDto);
@@ -42,23 +44,27 @@ public class EmployeeService implements PeopleService<Employee> {
 
     @Override
     @Transactional
-    public Employee update(long id, People employeeDto) {
-        validate(employeeDto);
-        Employee employee = findById(id);
+    public Employee update(String id, People employeeDto) {
+        validatePeople.forEach(b -> b.validate(employeeDto));
+        Employee employee = findByIdOrLogin(id);
         return (Employee) employee.merge(employeeDto);
     }
 
     @Override
     public Employee findById(Long id) {
-        return repository.findById(id).orElseThrow(()->new EntityNotFoundException("Entity not found"));
+        return repository.findById(id).orElseThrow(() -> new EntityNotFoundException("Entity not found"));
     }
-
+    @Override
+    public Employee findByUserLogin(String login) {
+        return repository.findByUserLogin(login).orElseThrow(()->new EntityNotFoundException("Entity not found"));
+    }
     @Override
     public void delete(Long id) {
         repository.delete(findById(id));
     }
-    public void validate(People people){
-        validatePeople.forEach(b ->b.validate(people));
-        validateUsers.forEach(b-> b.validate(people.getUser()));
+
+    public void validate(People people) {
+        validatePeople.forEach(b -> b.validate(people));
+        validateUsers.forEach(b -> b.validate(people.getUser()));
     }
 }

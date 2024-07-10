@@ -2,6 +2,7 @@ package br.com.nevesHoteis.service;
 
 import br.com.nevesHoteis.domain.Admin;
 import br.com.nevesHoteis.domain.People;
+import br.com.nevesHoteis.domain.SimpleUser;
 import br.com.nevesHoteis.service.validation.People.ValidatePeople;
 import br.com.nevesHoteis.service.validation.User.ValidateUser;
 import br.com.nevesHoteis.repository.AdminRepository;
@@ -42,15 +43,19 @@ public class AdminService implements PeopleService<Admin> {
 
     @Override
     @Transactional
-    public Admin update(long id, People adminDto) {
-        validate(adminDto);
-        Admin admin = findById(id);
+    public Admin update(String id, People adminDto) {
+        validatePeople.forEach(b -> b.validate(adminDto));
+        Admin admin = findByIdOrLogin(id);
         return (Admin) admin.merge(adminDto);
     }
 
     @Override
     public Admin findById(Long id) {
         return repository.findById(id).orElseThrow(()->new EntityNotFoundException("Entity not found"));
+    }
+    @Override
+    public Admin findByUserLogin(String login) {
+        return repository.findByUserLogin(login).orElseThrow(()->new EntityNotFoundException("Entity not found"));
     }
 
     @Override

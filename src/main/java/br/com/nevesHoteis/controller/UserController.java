@@ -1,6 +1,7 @@
 package br.com.nevesHoteis.controller;
 
 import br.com.nevesHoteis.controller.Dto.*;
+import br.com.nevesHoteis.domain.People;
 import br.com.nevesHoteis.domain.User;
 import br.com.nevesHoteis.service.TokenService;
 import br.com.nevesHoteis.service.UserService;
@@ -10,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
@@ -31,12 +31,25 @@ public class UserController {
         return ResponseEntity.ok(tokenService.tokensAfterLoginToken((User) authentication.getPrincipal()));
     }
     @PostMapping("/refresh")
-    ResponseEntity<?> refresh(@RequestBody TokenDto token){
+    ResponseEntity<TokenDto> refresh(@RequestBody TokenDto token){
         return ResponseEntity.ok(new TokenDto(tokenService.refreshToken(token.token())));
     }
     @GetMapping("/{email}")
-    ResponseEntity<?> findUserByLogin(@PathVariable String email){
+    ResponseEntity<UserDiscretDto> findUserByLogin(@PathVariable String email){
         return ResponseEntity.ok( new UserDiscretDto(service.findByLogin(email)));
+    }
+
+    @GetMapping("/myAccount")
+    ResponseEntity<PeopleCompleteDto> findPeopleByLogin(){
+        return ResponseEntity.ok( new PeopleCompleteDto(service.findPeopleByLogin()));
+    }
+    @PutMapping("/updatePersonalDataAccount")
+    ResponseEntity<PeopleCompleteDto> updatePersonalDataAccount(@RequestBody @Valid PeoplePersonalDataDto dto){
+        return ResponseEntity.ok( new PeopleCompleteDto(service.updateMyAccount(new People(dto))));
+    }
+    @PutMapping("/updateAddressAccount")
+    ResponseEntity<PeopleCompleteDto> updateAddressAccount(@RequestBody @Valid PeopleAddressDataDto dto){
+        return ResponseEntity.ok( new PeopleCompleteDto(service.updateMyAccount(new People(dto))));
     }
     @PutMapping("/redefine-password")
     ResponseEntity<String> redefinePassword(@RequestBody @Valid  RedefinePasswordDto dto){

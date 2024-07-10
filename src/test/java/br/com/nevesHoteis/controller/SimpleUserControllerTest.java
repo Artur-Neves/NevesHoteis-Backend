@@ -26,7 +26,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
+@WithMockUser(authorities = "USER")
 class SimpleUserControllerTest extends PeopleControllerTest<SimpleUser, SimpleUserService> {
     @Autowired
     JacksonTester<SimpleUserDto> simpleUserDtoJacksonTester;
@@ -68,7 +68,7 @@ class SimpleUserControllerTest extends PeopleControllerTest<SimpleUser, SimpleUs
     @DisplayName("Testando a atualização de um usuário simples")
     void test03() throws Exception{
 
-        when(service.update(anyLong(), any())).thenReturn(simpleUser);
+        when(service.update(any(), any())).thenReturn(simpleUser);
         mockMvc.perform(put("/simple-user/"+simpleUser.getId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(dtoJacksonTester.write(new PeopleDto(simpleUser)).getJson()))

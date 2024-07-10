@@ -24,7 +24,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
+@WithMockUser(authorities = "ADMIN")
 public class EmployeeControllerTest extends PeopleControllerTest<Employee, EmployeeService>{
     private Employee employee = new Employee();
     private Address address = new Address();
@@ -46,8 +46,6 @@ public class EmployeeControllerTest extends PeopleControllerTest<Employee, Emplo
                         content().json(pageCompleteDtoJacksonTester.write(page.map(PeopleCompleteDto::new)).getJson()));
     }
 
-
-    @WithMockUser
     @Test
     @DisplayName("Testando o salvamento de um funcionário")
     void test02() throws Exception {
@@ -62,7 +60,7 @@ public class EmployeeControllerTest extends PeopleControllerTest<Employee, Emplo
     @Test
     @DisplayName("Testando a atualização de um funcionário")
     void test03() throws Exception{
-        when(service.update(anyLong(), any())).thenReturn(employee);
+        when(service.update(any(), any())).thenReturn(employee);
         mockMvc.perform(put("/employee/"+employee.getId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(dtoJacksonTester.write(new PeopleDto(employee)).getJson()))

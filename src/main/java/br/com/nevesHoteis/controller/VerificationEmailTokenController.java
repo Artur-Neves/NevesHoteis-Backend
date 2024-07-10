@@ -17,7 +17,7 @@ public class VerificationEmailTokenController {
     @Autowired
     private VerificationEmailTokenService service;
 
-    @PostMapping("")
+    @PostMapping()
     ResponseEntity<?> createdOrResendEmail(@RequestBody @Valid TokenEmailDto tokenEmailDto) throws MessagingException, IOException {
         TimeTokenEmailDto responseDto = new TimeTokenEmailDto(service.createdOrResend(tokenEmailDto).getResendIntervalSeconds());
         return ResponseEntity.ok( responseDto);

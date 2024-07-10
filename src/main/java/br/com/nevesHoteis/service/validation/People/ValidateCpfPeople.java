@@ -25,12 +25,9 @@ public class ValidateCpfPeople implements ValidatePeople{
             sum+= Integer.parseInt(cpfArray[11-index])*index;
         }
         int restResult = sum%11;
-        int thenDigit = Integer.parseInt( cpfArray[10]);
-        boolean b1= (restResult<2 && thenDigit==0);
-        boolean b2= (restResult>=2 && thenDigit== (11-restResult));
-        return b1 != b2;
+        int elevenDigit = Integer.parseInt( cpfArray[10]);
+        return (restResult<2 && elevenDigit==0) != (restResult>=2 && elevenDigit== (11-restResult));
     }
-
     private boolean verificateTenthDigit(String cpf){
       int sum=0;
       String[] cpfArray = cpf.split("");
@@ -39,9 +36,7 @@ public class ValidateCpfPeople implements ValidatePeople{
       }
       int restResult = sum%11;
       int thenDigit = Integer.parseInt( cpfArray[9]);
-        boolean b1= (restResult<2 && thenDigit==0);
-        boolean b2= (restResult>=2 && thenDigit== (11-restResult));
-        return b1 != b2;
+        return (restResult<2 && thenDigit==0) != (restResult>=2 && thenDigit== (11-restResult));
     }
 
     private  boolean verificateCpfsInvalids(String cpf){

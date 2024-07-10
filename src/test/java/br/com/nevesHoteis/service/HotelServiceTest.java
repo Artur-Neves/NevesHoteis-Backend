@@ -16,6 +16,7 @@ import org.springframework.data.domain.Pageable;
 
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -83,7 +84,7 @@ class HotelServiceTest{
         then(tMock).should().merge(hotel);
     }
     private Hotel randomHotel(){
-        return new Hotel(1L, "Hotel fiveStars", LocalDateTime.of(2024, 5, 3, 7, 36), new BigDecimal(35), randomAddress());
+        return new Hotel(1L, "Hotel fiveStars", LocalDate.now().plusWeeks(4), new BigDecimal(35), randomAddress());
     }
     private Address randomAddress(){
         return new Address( "45502-245", "BA", "Jequié", "Beira rio", "Rua Portugual");

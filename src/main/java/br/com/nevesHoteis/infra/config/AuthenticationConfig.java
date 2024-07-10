@@ -32,10 +32,12 @@ public class AuthenticationConfig {
                     .csrf(AbstractHttpConfigurer::disable)
                     .sessionManagement(ses -> ses.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                     .authorizeHttpRequests(req -> {
-                        req.requestMatchers(HttpMethod.GET, "/user/**").permitAll();
-                        req.requestMatchers(HttpMethod.POST, "/user/login", "/simple-user/create-simple", "/user/refresh").permitAll();
+                        req.requestMatchers(HttpMethod.GET, "/user/**", "/hotel/**").permitAll();
+                        req.requestMatchers(HttpMethod.POST, "/user/login", "/simple-user/create-simple", "/user/refresh", "/email-token/**").permitAll();
                         req.requestMatchers(HttpMethod.PUT, "/user/redefine-password").permitAll();
-                        req.requestMatchers(HttpMethod.GET, "/admin").hasAuthority("ADMIN");
+                        req.requestMatchers( "/admin/**", "/employee**").hasAuthority("ADMIN");
+                        req.requestMatchers("/hotel/**").hasAuthority("EMPLOYEE");
+
                                 req.anyRequest().authenticated();
 
                     })

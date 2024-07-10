@@ -6,6 +6,7 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 public record HotelDto(
@@ -14,7 +15,7 @@ public record HotelDto(
         String name,
         @NotNull
         @FutureOrPresent
-        LocalDateTime availabilityDate,
+        LocalDate availabilityDate,
         @NotNull
         @Positive
         @Max(999999)

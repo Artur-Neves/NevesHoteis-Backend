@@ -23,6 +23,5 @@ public class Employee extends People{
     }
     public Employee(PeopleUpdateDto dto){
         super(dto);
-        setRole(Role.EMPLOYEE);
     }
 }

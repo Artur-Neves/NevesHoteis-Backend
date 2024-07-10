@@ -27,7 +27,6 @@ public class SimpleUser extends People {
     }
     public SimpleUser(PeopleUpdateDto dto){
         super(dto);
-        setRole(Role.USER);
     }
     public SimpleUser (SimpleUserDto dto){
         this.name=dto.name();

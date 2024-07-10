@@ -25,8 +25,8 @@ public record AddressCompleteDto (
      String propertyLocation){
 
     public AddressCompleteDto(Address address){
-        this( address.getCep(), address.getState(),
-                 address.getCity(), address.getNeighborhood(), address.getPropertyLocation());
+            this( address.getCep(), address.getState(),
+                     address.getCity(), address.getNeighborhood(), address.getPropertyLocation());
     }
 }
 

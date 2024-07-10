@@ -71,19 +71,29 @@ class EmployeeServiceTest  extends PeopleServiceTest<Employee> {
         then(validateUsers).should().forEach(any());
         then(validatePeoples).should().forEach(any());
     }
-    @DisplayName("Testando a atualização da entidade employee")
+    @DisplayName("Testando a atualização da entidade usando o id employee")
     @Test
     void test05(){
+        service.setValidatePeople(Arrays.asList(validateBirthdayPeople, validateCpfPeople));
         when(repository.findById(anyLong())).thenReturn(Optional.of(tMock));
         when(tMock.merge(any())).thenReturn(t);
-        assertEquals(t, service.update(t.getId(),  t));
+        assertEquals(t, service.update(""+t.getId(),  t));
         then(tMock).should().merge(any());
-        then(validateUsers).should().forEach(any());
+        verify(validateBirthdayPeople).validate(t);
+        verify(validateCpfPeople).validate(t);
+    }
+    @DisplayName("Testando a atualização da entidade usando o login employee")
+    @Test
+    void test06(){
+        when(repository.findByUserLogin(any())).thenReturn(Optional.of(tMock));
+        when(tMock.merge(any())).thenReturn(t);
+        assertEquals(t, service.update(t.getUser().getLogin(),  t));
+        then(tMock).should().merge(any());
         then(validatePeoples).should().forEach(any());
     }
     @DisplayName("Testando a exclusão da entidade employee")
     @Test
-    void test06(){
+    void test07(){
         when(repository.findById(anyLong())).thenReturn(Optional.of(tMock));
         service.delete(anyLong());
         then(repository).should().delete(any());
@@ -100,6 +110,20 @@ class EmployeeServiceTest  extends PeopleServiceTest<Employee> {
         verify(validateBirthdayPeople).validate(people);
         verify(validateCpfPeople).validate(people);
         verify(validatePasswordUser).validate(user);
+    }
+    @DisplayName("Testando a seleção de um Emplooye pelo login")
+    @Test
+    void test08(){
+        when(repository.findByUserLogin(any())).thenReturn(Optional.of(t));
+        assertEquals(t ,service.findByUserLogin(t.getUser().getLogin()));
+        then(repository).should().findByUserLogin(any());
+    }
+    @DisplayName("Testando erro ao não achar um employee pelo login")
+    @Test
+    void test09(){
+        when(repository.findByUserLogin(any())).thenReturn(Optional.empty());
+        assertThrows(EntityNotFoundException.class,()-> service.findByIdOrLogin(t.getUser().getLogin()));
+        then(repository).should().findByUserLogin(any());
     }
 
 }
