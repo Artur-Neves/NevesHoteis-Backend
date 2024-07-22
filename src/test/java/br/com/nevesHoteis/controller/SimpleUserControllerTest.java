@@ -1,10 +1,10 @@
 package br.com.nevesHoteis.controller;
 
-import br.com.nevesHoteis.controller.Dto.SimpleUserDto;
+import br.com.nevesHoteis.controller.dto.people.SimpleUserDto;
 import br.com.nevesHoteis.domain.*;
-import br.com.nevesHoteis.controller.Dto.PeopleCompleteDto;
-import br.com.nevesHoteis.controller.Dto.PeopleDto;
-import br.com.nevesHoteis.controller.Dto.PeopleUpdateDto;
+import br.com.nevesHoteis.controller.dto.people.PeopleCompleteDto;
+import br.com.nevesHoteis.controller.dto.people.PeopleDto;
+import br.com.nevesHoteis.controller.dto.people.PeopleUpdateDto;
 import br.com.nevesHoteis.service.SimpleUserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -13,8 +13,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.json.JacksonTester;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.web.servlet.request.MockMultipartHttpServletRequestBuilder;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -57,9 +60,7 @@ class SimpleUserControllerTest extends PeopleControllerTest<SimpleUser, SimpleUs
     @DisplayName("Testando o salvamento de um usuário simples")
     void test02() throws Exception {
         when(service.save(any())).thenReturn(simpleUser);
-        mockMvc.perform(post("/simple-user")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(dtoJacksonTester.write( new PeopleDto(simpleUser)).getJson()))
+        mockMvc.perform(creatingFormData(HttpMethod.POST, "/simple-user"))
                 .andExpectAll(status().isCreated(),
                         content().contentType(MediaType.APPLICATION_JSON),
                         content().json(completeDtoJacksonTester.write( new PeopleCompleteDto(simpleUser)).getJson()));
@@ -69,9 +70,7 @@ class SimpleUserControllerTest extends PeopleControllerTest<SimpleUser, SimpleUs
     void test03() throws Exception{
 
         when(service.update(any(), any())).thenReturn(simpleUser);
-        mockMvc.perform(put("/simple-user/"+simpleUser.getId())
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(dtoJacksonTester.write(new PeopleDto(simpleUser)).getJson()))
+        mockMvc.perform(creatingFormData(HttpMethod.PUT, "/simple-user/"+simpleUser.getId()))
                 .andExpectAll(status().isOk(),
                         content().contentType(MediaType.APPLICATION_JSON),
                         content().json(updateDtoJacksonTester.write( new PeopleUpdateDto(simpleUser)).getJson()));
@@ -113,5 +112,21 @@ class SimpleUserControllerTest extends PeopleControllerTest<SimpleUser, SimpleUs
         mockMvc.perform(get("/hotel/"))
                 .andExpectAll(status().isNotFound());
     }
-
+    MockMultipartHttpServletRequestBuilder creatingFormData(HttpMethod method, String endpoint){
+        MockMultipartFile multipartFile = new MockMultipartFile("file", "image.jpg",
+                "Image/jpg", "Spring Framework".getBytes());
+        return   (MockMultipartHttpServletRequestBuilder) multipart(method, endpoint)
+                .file(multipartFile)
+                .param("name", simpleUser.getName())
+                .param("birthDay", simpleUser.getBirthDay().toString())
+                .param("cpf", simpleUser.getCpf())
+                .param("phone", simpleUser.getPhone())
+                .param("address.cep", simpleUser.getAddress().getCep())
+                .param("address.state", simpleUser.getAddress().getState())
+                .param("address.city", simpleUser.getAddress().getCity())
+                .param("address.neighborhood", simpleUser.getAddress().getNeighborhood())
+                .param("address.propertyLocation", simpleUser.getAddress().getPropertyLocation())
+                .param("user.login", simpleUser.getUser().getLogin())
+                .param("user.password", simpleUser.getUser().getPassword());
+    }
 }

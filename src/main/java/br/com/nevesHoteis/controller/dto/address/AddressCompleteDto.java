@@ -1,11 +1,9 @@
-package br.com.nevesHoteis.controller.Dto;
+package br.com.nevesHoteis.controller.dto.address;
 
 import br.com.nevesHoteis.domain.Address;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
-import org.apache.catalina.filters.AddDefaultCharsetFilter;
 
 public record AddressCompleteDto (
      @Pattern(regexp = "\\d{5}-\\d{3}")

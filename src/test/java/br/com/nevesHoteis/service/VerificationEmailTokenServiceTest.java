@@ -1,6 +1,6 @@
 package br.com.nevesHoteis.service;
 
-import br.com.nevesHoteis.controller.Dto.TokenEmailDto;
+import br.com.nevesHoteis.controller.dto.token.TokenEmailDto;
 import br.com.nevesHoteis.domain.User;
 import br.com.nevesHoteis.domain.VerificationEmailToken;
 import br.com.nevesHoteis.infra.exeption.EmailTokenException;
@@ -22,7 +22,6 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.when;
 

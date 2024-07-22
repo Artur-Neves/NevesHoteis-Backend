@@ -1,20 +1,22 @@
-package br.com.nevesHoteis.controller.Dto;
+package br.com.nevesHoteis.controller.dto.hotel;
 
+import br.com.nevesHoteis.controller.dto.address.AddressCompleteDto;
 import br.com.nevesHoteis.domain.Hotel;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.util.List;
 
 public record HotelCompleteDto (
          Long id,
          String name,
          LocalDate availabilityDate,
          BigDecimal dailyValue,
+         List<byte[]> photos,
          AddressCompleteDto address
 ){
     public HotelCompleteDto(Hotel hotel) {
         this(hotel.getId(), hotel.getName(), hotel.getAvailabilityDate()
-        , hotel.getDailyValue(), new AddressCompleteDto( hotel.getAddress()));
+        , hotel.getDailyValue(), hotel.getPhotos(),new AddressCompleteDto( hotel.getAddress()));
     }
 }

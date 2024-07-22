@@ -1,7 +1,13 @@
 package br.com.nevesHoteis.controller;
 
 
-import br.com.nevesHoteis.controller.Dto.*;
+import br.com.nevesHoteis.controller.dto.people.PeopleAddressDataDto;
+import br.com.nevesHoteis.controller.dto.people.PeopleCompleteDto;
+import br.com.nevesHoteis.controller.dto.people.PeoplePersonalDataDto;
+import br.com.nevesHoteis.controller.dto.token.TokenDto;
+import br.com.nevesHoteis.controller.dto.user.LoginDto;
+import br.com.nevesHoteis.controller.dto.user.RedefinePasswordDto;
+import br.com.nevesHoteis.controller.dto.user.UserDiscretDto;
 import br.com.nevesHoteis.domain.*;
 import br.com.nevesHoteis.service.TokenService;
 import br.com.nevesHoteis.service.UserService;
@@ -12,11 +18,14 @@ import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.json.JacksonTester;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.web.servlet.request.MockMultipartHttpServletRequestBuilder;
 
 
 import java.time.LocalDate;
@@ -27,6 +36,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.*;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -129,9 +139,7 @@ class UserControllerTest extends BaseControllerTest<UserService>{
     @DisplayName("Testando a atualização dos dados pessoais da conta")
     void test06() throws Exception {
         when(service.updateMyAccount(any(People.class))).thenReturn(people);
-        mockMvc.perform(put("/user/updatePersonalDataAccount")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(peoplePersonalDataDtoJacksonTester.write(new PeoplePersonalDataDto(people)).getJson()))
+        mockMvc.perform(creatingFormData(HttpMethod.PUT, "/user/updatePersonalDataAccount"))
                 .andExpectAll(status().isOk(),
                         content().contentType(MediaType.APPLICATION_JSON),
                         content().json(peopleCompleteDtoJacksonTester.write(new PeopleCompleteDto(people)).getJson()));
@@ -147,5 +155,22 @@ class UserControllerTest extends BaseControllerTest<UserService>{
                 .andExpectAll(status().isOk(),
                         content().contentType(MediaType.APPLICATION_JSON),
                         content().json(peopleCompleteDtoJacksonTester.write(new PeopleCompleteDto(people)).getJson()));
+    }
+    MockMultipartHttpServletRequestBuilder creatingFormData(HttpMethod method, String endpoint){
+        MockMultipartFile multipartFile = new MockMultipartFile("file", "image.jpg",
+                "Image/jpg", "Spring Framework".getBytes());
+        return   (MockMultipartHttpServletRequestBuilder) multipart(method, endpoint)
+                .file(multipartFile)
+                .param("name", people.getName())
+                .param("birthDay", people.getBirthDay().toString())
+                .param("cpf", people.getCpf())
+                .param("phone", people.getPhone())
+                .param("address.cep", people.getAddress().getCep())
+                .param("address.state", people.getAddress().getState())
+                .param("address.city", people.getAddress().getCity())
+                .param("address.neighborhood", people.getAddress().getNeighborhood())
+                .param("address.propertyLocation", people.getAddress().getPropertyLocation())
+                .param("user.login", people.getUser().getLogin())
+                .param("user.password", people.getUser().getPassword());
     }
 }

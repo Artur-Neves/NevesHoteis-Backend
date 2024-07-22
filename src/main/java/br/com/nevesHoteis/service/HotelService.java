@@ -13,7 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class HotelService {
     @Autowired
     private HotelRepository repository;
-
     public Page<Hotel> findAll(Pageable pageable) {
         return repository.findAll(pageable);
     }

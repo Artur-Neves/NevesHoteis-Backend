@@ -1,8 +1,8 @@
 package br.com.nevesHoteis.domain;
 
-import br.com.nevesHoteis.controller.Dto.LoginDto;
-import br.com.nevesHoteis.controller.Dto.UserDiscretDto;
-import br.com.nevesHoteis.controller.Dto.UserUpdateDto;
+import br.com.nevesHoteis.controller.dto.user.LoginDto;
+import br.com.nevesHoteis.controller.dto.user.UserDiscretDto;
+import br.com.nevesHoteis.controller.dto.user.UserUpdateDto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -18,15 +18,16 @@ import java.util.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name="user_entity")
+@Setter
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(unique = true)
     private String login;
-    @Setter
+
     private boolean enabled = false;
-    @Setter
+
     private String password;
     @Setter
     @Enumerated(EnumType.STRING)
@@ -35,8 +36,8 @@ public class User implements UserDetails {
     private VerificationEmailToken verificationEmailToken;
 
     public User (LoginDto dto){
-        this.login = dto.login();
-        this.password = dto.password();
+        this.login = dto.getLogin();
+        this.password = dto.getPassword();
     }
     public User (UserDiscretDto dto){
         this.id = dto.id();
@@ -51,6 +52,33 @@ public class User implements UserDetails {
         this.login=login;
         this.password=password;
         this.role=role;
+    }
+
+
+    public void merge(User user) {
+        this.password=user.getPassword();
+        passwordEncoder();
+    }
+
+    public void redefinePassword(String newPassword) {
+        this.password=  newPassword;
+        passwordEncoder();
+    }
+
+    public void passwordEncoder() {
+      this.setPassword(BCrypt.hashpw(getPassword(), BCrypt.gensalt()));
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", login='" + login + '\'' +
+                ", enabled=" + enabled +
+                ", password='" + password + '\'' +
+                ", role=" + role +
+                ", verificationEmailToken=" + verificationEmailToken +
+                '}';
     }
 
     @Override
@@ -86,19 +114,5 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return enabled;
-    }
-
-    public void merge(User user) {
-        this.password=user.getPassword();
-        passwordEncoder();
-    }
-
-    public void redefinePassword(String newPassword) {
-        this.password=  newPassword;
-        passwordEncoder();
-    }
-
-    public void passwordEncoder() {
-      this.setPassword(BCrypt.hashpw(getPassword(), BCrypt.gensalt()));
     }
 }

@@ -1,7 +1,7 @@
 package br.com.nevesHoteis.domain;
 
-import br.com.nevesHoteis.controller.Dto.PeopleDto;
-import br.com.nevesHoteis.controller.Dto.PeopleUpdateDto;
+import br.com.nevesHoteis.controller.dto.people.PeopleDto;
+import br.com.nevesHoteis.controller.dto.people.PeopleUpdateDto;
 import jakarta.persistence.Entity;
 
 import java.time.LocalDate;

@@ -74,7 +74,13 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-mail</artifactId>
 		</dependency>
-	</dependencies>
+        <dependency>
+            <groupId>org.jetbrains</groupId>
+            <artifactId>annotations</artifactId>
+            <version>13.0</version>
+            <scope>compile</scope>
+        </dependency>
+    </dependencies>
 
 	<build>
 		<plugins>
@@ -128,15 +134,16 @@
 				</dependencies>
 				<configuration>
 					<targetClasses>
-						<param>br.com.nevesHoteis.controller.*</param>
+						<param>br.com.nevesHoteis.controller.*Controller*</param>
 						<param>br.com.nevesHoteis.service.*</param>
 					</targetClasses>
 					<targetTests>
-
 						<param>br.com.nevesHoteis.service.*</param>
-						<param>br.com.nevesHoteis.controller.*</param>
+						<param>br.com.nevesHoteis.controller.*Controller*</param>
 					</targetTests>
+
 				</configuration>
+
 
 			</plugin>
 		</plugins>

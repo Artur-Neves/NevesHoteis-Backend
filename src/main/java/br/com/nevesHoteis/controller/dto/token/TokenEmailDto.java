@@ -1,4 +1,4 @@
-package br.com.nevesHoteis.controller.Dto;
+package br.com.nevesHoteis.controller.dto.token;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

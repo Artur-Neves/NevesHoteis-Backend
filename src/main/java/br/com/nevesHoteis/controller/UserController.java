@@ -1,12 +1,19 @@
 package br.com.nevesHoteis.controller;
 
-import br.com.nevesHoteis.controller.Dto.*;
+import br.com.nevesHoteis.controller.dto.people.PeopleAddressDataDto;
+import br.com.nevesHoteis.controller.dto.people.PeopleCompleteDto;
+import br.com.nevesHoteis.controller.dto.people.PeoplePersonalDataDto;
+import br.com.nevesHoteis.controller.dto.token.TokenDto;
+import br.com.nevesHoteis.controller.dto.user.LoginDto;
+import br.com.nevesHoteis.controller.dto.user.RedefinePasswordDto;
+import br.com.nevesHoteis.controller.dto.user.UserDiscretDto;
 import br.com.nevesHoteis.domain.People;
 import br.com.nevesHoteis.domain.User;
 import br.com.nevesHoteis.service.TokenService;
 import br.com.nevesHoteis.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -26,7 +33,7 @@ public class UserController {
     private UserService service;
     @PostMapping("/login")
     ResponseEntity<Map<String, String>> login(@Valid @RequestBody LoginDto loginDto){
-        UsernamePasswordAuthenticationToken userToken= new UsernamePasswordAuthenticationToken(loginDto.login(), loginDto.password());
+        UsernamePasswordAuthenticationToken userToken= new UsernamePasswordAuthenticationToken(loginDto.getLogin(), loginDto.getPassword());
         Authentication authentication =manager.authenticate(userToken);
         return ResponseEntity.ok(tokenService.tokensAfterLoginToken((User) authentication.getPrincipal()));
     }
@@ -43,8 +50,8 @@ public class UserController {
     ResponseEntity<PeopleCompleteDto> findPeopleByLogin(){
         return ResponseEntity.ok( new PeopleCompleteDto(service.findPeopleByLogin()));
     }
-    @PutMapping("/updatePersonalDataAccount")
-    ResponseEntity<PeopleCompleteDto> updatePersonalDataAccount(@RequestBody @Valid PeoplePersonalDataDto dto){
+    @PutMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE, value = "/updatePersonalDataAccount")
+    ResponseEntity<PeopleCompleteDto> updatePersonalDataAccount(@ModelAttribute @Valid PeoplePersonalDataDto dto){
         return ResponseEntity.ok( new PeopleCompleteDto(service.updateMyAccount(new People(dto))));
     }
     @PutMapping("/updateAddressAccount")
@@ -52,7 +59,7 @@ public class UserController {
         return ResponseEntity.ok( new PeopleCompleteDto(service.updateMyAccount(new People(dto))));
     }
     @PutMapping("/redefine-password")
-    ResponseEntity<String> redefinePassword(@RequestBody @Valid  RedefinePasswordDto dto){
+    ResponseEntity<String> redefinePassword(@RequestBody @Valid RedefinePasswordDto dto){
         service.redefinePassword(dto);
         return ResponseEntity.noContent().build();
     }

@@ -1,21 +1,16 @@
 package br.com.nevesHoteis.service;
 
-import br.com.nevesHoteis.controller.Dto.RedefinePasswordDto;
-import br.com.nevesHoteis.controller.Dto.TokenEmailDto;
-import br.com.nevesHoteis.domain.Employee;
+import br.com.nevesHoteis.controller.dto.user.RedefinePasswordDto;
+import br.com.nevesHoteis.controller.dto.token.TokenEmailDto;
 import br.com.nevesHoteis.domain.People;
 import br.com.nevesHoteis.domain.Role;
 import br.com.nevesHoteis.domain.User;
 import br.com.nevesHoteis.infra.exeption.ValidateUserException;
-import br.com.nevesHoteis.repository.AdminRepository;
-import br.com.nevesHoteis.repository.EmployeeRepository;
-import br.com.nevesHoteis.repository.SimpleUserRepository;
 import br.com.nevesHoteis.repository.UserRepository;
 import br.com.nevesHoteis.service.validation.User.ValidatePasswordUser;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

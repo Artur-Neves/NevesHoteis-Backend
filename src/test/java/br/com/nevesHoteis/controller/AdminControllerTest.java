@@ -2,19 +2,26 @@ package br.com.nevesHoteis.controller;
 
 import br.com.nevesHoteis.domain.Address;
 import br.com.nevesHoteis.domain.Admin;
-import br.com.nevesHoteis.controller.Dto.PeopleCompleteDto;
-import br.com.nevesHoteis.controller.Dto.PeopleDto;
-import br.com.nevesHoteis.controller.Dto.PeopleUpdateDto;
+import br.com.nevesHoteis.controller.dto.people.PeopleCompleteDto;
+import br.com.nevesHoteis.controller.dto.people.PeopleDto;
+import br.com.nevesHoteis.controller.dto.people.PeopleUpdateDto;
 import br.com.nevesHoteis.domain.Role;
 import br.com.nevesHoteis.domain.User;
 import br.com.nevesHoteis.service.AdminService;
+import net.bytebuddy.asm.Advice;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.shadow.com.univocity.parsers.conversions.FormattedDateConversion;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.mock.web.MockMultipartHttpServletRequest;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.web.servlet.request.MockMultipartHttpServletRequestBuilder;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -54,21 +61,18 @@ public class AdminControllerTest extends PeopleControllerTest<Admin, AdminServic
     @DisplayName("Testando o salvamento de um admin")
     void test02() throws Exception {
         when(service.save(any())).thenReturn(admin);
-        mockMvc.perform(post("/admin")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(dtoJacksonTester.write(new PeopleDto(admin)).getJson()))
+        mockMvc.perform(creatingFormData(HttpMethod.POST,"/admin"))
                 .andExpectAll(status().isCreated(),
                         content().contentType(MediaType.APPLICATION_JSON),
                         content().json(completeDtoJacksonTester.write(new PeopleCompleteDto(admin)).getJson()));
+
     }
 
     @Test
     @DisplayName("Testando a atualização de um admin")
     void test03() throws Exception {
         when(service.update(any(), any())).thenReturn(admin);
-        mockMvc.perform(put("/admin/" + admin.getId())
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(updateDtoJacksonTester.write(new PeopleUpdateDto(admin)).getJson()))
+        mockMvc.perform(creatingFormData(HttpMethod.PUT,"/admin/" + admin.getId()))
                 .andExpectAll(status().isOk(),
                         content().contentType(MediaType.APPLICATION_JSON),
                         content().json(updateDtoJacksonTester.write(new PeopleUpdateDto(admin)).getJson()));
@@ -100,6 +104,22 @@ public class AdminControllerTest extends PeopleControllerTest<Admin, AdminServic
         mockMvc.perform(get("/hotel/"))
                 .andExpectAll(status().isNotFound());
     }
-
+    MockMultipartHttpServletRequestBuilder creatingFormData(HttpMethod method, String endpoint){
+        MockMultipartFile multipartFile = new MockMultipartFile("file", "image.jpg",
+                "Image/jpg", "Spring Framework".getBytes());
+        return   (MockMultipartHttpServletRequestBuilder) multipart(method, endpoint)
+                .file(multipartFile)
+                .param("name", admin.getName())
+                .param("birthDay", admin.getBirthDay().toString())
+                .param("cpf", admin.getCpf())
+                .param("phone", admin.getPhone())
+                .param("address.cep", admin.getAddress().getCep())
+                .param("address.state", admin.getAddress().getState())
+                .param("address.city", admin.getAddress().getCity())
+                .param("address.neighborhood", admin.getAddress().getNeighborhood())
+                .param("address.propertyLocation", admin.getAddress().getPropertyLocation())
+                .param("user.login", admin.getUser().getLogin())
+                .param("user.password", admin.getUser().getPassword());
+    }
 
 }

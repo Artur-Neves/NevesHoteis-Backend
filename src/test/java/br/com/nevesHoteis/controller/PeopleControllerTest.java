@@ -1,9 +1,9 @@
 package br.com.nevesHoteis.controller;
 
 import br.com.nevesHoteis.domain.*;
-import br.com.nevesHoteis.controller.Dto.PeopleCompleteDto;
-import br.com.nevesHoteis.controller.Dto.PeopleDto;
-import br.com.nevesHoteis.controller.Dto.PeopleUpdateDto;
+import br.com.nevesHoteis.controller.dto.people.PeopleCompleteDto;
+import br.com.nevesHoteis.controller.dto.people.PeopleDto;
+import br.com.nevesHoteis.controller.dto.people.PeopleUpdateDto;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.json.JacksonTester;

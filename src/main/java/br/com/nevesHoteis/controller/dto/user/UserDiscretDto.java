@@ -1,10 +1,8 @@
-package br.com.nevesHoteis.controller.Dto;
+package br.com.nevesHoteis.controller.dto.user;
 
 import br.com.nevesHoteis.domain.User;
 import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 
 public record UserDiscretDto (
         @NotNull

@@ -1,7 +1,7 @@
 package br.com.nevesHoteis.controller;
 
-import br.com.nevesHoteis.controller.Dto.TimeTokenEmailDto;
-import br.com.nevesHoteis.controller.Dto.TokenEmailDto;
+import br.com.nevesHoteis.controller.dto.token.TimeTokenEmailDto;
+import br.com.nevesHoteis.controller.dto.token.TokenEmailDto;
 import br.com.nevesHoteis.service.VerificationEmailTokenService;
 import jakarta.mail.MessagingException;
 import jakarta.validation.Valid;

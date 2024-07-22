@@ -1,6 +1,6 @@
 package br.com.nevesHoteis.controller;
 
-import br.com.nevesHoteis.controller.Dto.SimpleUserDto;
+import br.com.nevesHoteis.controller.dto.people.SimpleUserDto;
 import br.com.nevesHoteis.domain.SimpleUser;
 import br.com.nevesHoteis.service.SimpleUserService;
 import jakarta.validation.Valid;

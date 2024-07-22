@@ -2,8 +2,8 @@ package br.com.nevesHoteis.controller;
 
 import br.com.nevesHoteis.domain.Address;
 
-import br.com.nevesHoteis.controller.Dto.HotelCompleteDto;
-import br.com.nevesHoteis.controller.Dto.HotelDto;
+import br.com.nevesHoteis.controller.dto.hotel.HotelCompleteDto;
+import br.com.nevesHoteis.controller.dto.hotel.HotelDto;
 import br.com.nevesHoteis.domain.Hotel;
 import br.com.nevesHoteis.service.HotelService;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,14 +15,18 @@ import org.springframework.boot.test.json.JacksonTester;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.web.servlet.request.MockMultipartHttpServletRequestBuilder;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
+import static br.com.nevesHoteis.infra.utils.Conversions.convertMultiPartFileInByte;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
@@ -72,10 +76,7 @@ class HotelControllerTest extends BaseControllerTest<HotelService> {
     void test02() throws Exception {
         given(service.save(any())).willReturn(hotel);
         hotelDto = new HotelDto(hotel);
-        mockMvc.perform(post("/hotel")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(hotelDtoJacksonTester.write(hotelDto).getJson())
-                )
+        mockMvc.perform(creatingFormData(HttpMethod.POST, "/hotel"))
                 .andExpectAll(status().isCreated(),
                         content().contentType(MediaType.APPLICATION_JSON),
                         content().json(hotelCompleteDtoJacksonTester.write(new HotelCompleteDto(hotel)).getJson()));
@@ -101,10 +102,7 @@ class HotelControllerTest extends BaseControllerTest<HotelService> {
     void test05() throws Exception {
         hotelDto = new HotelDto(hotel);
         given(service.update(anyLong(), any(Hotel.class))).willReturn(hotel);
-        mockMvc.perform(put("/hotel/"+hotel.getId())
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(hotelDtoJacksonTester.write(hotelDto).getJson())
-                )
+        mockMvc.perform(creatingFormData(HttpMethod.PUT, "/hotel/"+hotel.getId()))
                 .andExpectAll(status().isOk(),
                         content().contentType(MediaType.APPLICATION_JSON),
                         content().json(hotelCompleteDtoJacksonTester.write(new HotelCompleteDto(hotel)).getJson()));
@@ -115,5 +113,23 @@ class HotelControllerTest extends BaseControllerTest<HotelService> {
         mockMvc.perform(delete("/hotel/"+hotel.getId()))
                 .andExpectAll(status().isNoContent());
         then(service).should().delete(anyLong())   ;
+    }
+    MockMultipartHttpServletRequestBuilder creatingFormData(HttpMethod method, String endpoint){
+        MockMultipartFile multipartFile = new MockMultipartFile("file", "image.jpg",
+                "Image/jpg", "Spring Framework".getBytes());
+        List<MultipartFile> multipartFileList = List.of(multipartFile);
+        return   (MockMultipartHttpServletRequestBuilder) multipart(method, endpoint)
+                .file("photos", convertMultiPartFileInByte( multipartFile))
+                .file("photos", convertMultiPartFileInByte( multipartFile))
+                .file("photos", convertMultiPartFileInByte( multipartFile))
+                .file("photos", convertMultiPartFileInByte( multipartFile))
+                .param("name", hotel.getName())
+                .param("availabilityDate", hotel.getAvailabilityDate().toString())
+                .param("dailyValue", hotel.getDailyValue().toString())
+                .param("address.cep", hotel.getAddress().getCep())
+                .param("address.state", hotel.getAddress().getState())
+                .param("address.city", hotel.getAddress().getCity())
+                .param("address.neighborhood", hotel.getAddress().getNeighborhood())
+                .param("address.propertyLocation", hotel.getAddress().getPropertyLocation());
     }
 }

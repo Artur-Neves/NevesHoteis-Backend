@@ -1,6 +1,6 @@
 package br.com.nevesHoteis.service;
 
-import br.com.nevesHoteis.controller.Dto.TokenEmailDto;
+import br.com.nevesHoteis.controller.dto.token.TokenEmailDto;
 import br.com.nevesHoteis.domain.User;
 import br.com.nevesHoteis.domain.VerificationEmailToken;
 import br.com.nevesHoteis.infra.exeption.EmailTokenException;

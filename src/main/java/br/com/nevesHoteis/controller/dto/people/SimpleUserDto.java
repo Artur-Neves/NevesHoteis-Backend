@@ -1,5 +1,6 @@
-package br.com.nevesHoteis.controller.Dto;
+package br.com.nevesHoteis.controller.dto.people;
 
+import br.com.nevesHoteis.controller.dto.user.LoginDto;
 import br.com.nevesHoteis.domain.Address;
 import br.com.nevesHoteis.domain.SimpleUser;
 import jakarta.validation.constraints.NotBlank;

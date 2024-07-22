@@ -1,8 +1,8 @@
 package br.com.nevesHoteis.infra.factory;
 
 import br.com.nevesHoteis.domain.Admin;
-import br.com.nevesHoteis.controller.Dto.PeopleDto;
-import br.com.nevesHoteis.controller.Dto.PeopleUpdateDto;
+import br.com.nevesHoteis.controller.dto.people.PeopleDto;
+import br.com.nevesHoteis.controller.dto.people.PeopleUpdateDto;
 import br.com.nevesHoteis.domain.Employee;
 import br.com.nevesHoteis.domain.People;
 import br.com.nevesHoteis.domain.SimpleUser;

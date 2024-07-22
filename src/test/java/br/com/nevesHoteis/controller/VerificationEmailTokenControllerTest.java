@@ -1,10 +1,12 @@
 package br.com.nevesHoteis.controller;
 
-import br.com.nevesHoteis.controller.Dto.*;
+import br.com.nevesHoteis.controller.dto.token.TimeTokenEmailDto;
+import br.com.nevesHoteis.controller.dto.token.TokenDto;
+import br.com.nevesHoteis.controller.dto.token.TokenEmailDto;
+import br.com.nevesHoteis.controller.dto.user.LoginDto;
 import br.com.nevesHoteis.domain.User;
 import br.com.nevesHoteis.domain.VerificationEmailToken;
 import br.com.nevesHoteis.service.VerificationEmailTokenService;
-import jakarta.mail.MessagingException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -12,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.json.JacksonTester;
 import org.springframework.http.MediaType;
 
-import java.io.IOException;
 import java.time.LocalDateTime;
 
 import static org.mockito.ArgumentMatchers.any;

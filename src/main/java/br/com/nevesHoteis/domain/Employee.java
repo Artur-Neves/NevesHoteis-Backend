@@ -1,7 +1,7 @@
 package br.com.nevesHoteis.domain;
 
-import br.com.nevesHoteis.controller.Dto.PeopleDto;
-import br.com.nevesHoteis.controller.Dto.PeopleUpdateDto;
+import br.com.nevesHoteis.controller.dto.people.PeopleDto;
+import br.com.nevesHoteis.controller.dto.people.PeopleUpdateDto;
 import jakarta.persistence.Entity;
 
 import java.time.LocalDate;
@@ -14,8 +14,12 @@ public class Employee extends People{
         setRole(Role.EMPLOYEE);
     }
 
-    public Employee() {
+    public Employee(Long id, String name, LocalDate birthDay, String cpf, String phone, Address address, User user, byte[] profilePicture) {
+        super(id, name, birthDay, cpf, phone, address, user);
+        this.profilePicture = profilePicture;
+    }
 
+    public Employee() {
     }
     public Employee(PeopleDto dto) {
         super(dto);

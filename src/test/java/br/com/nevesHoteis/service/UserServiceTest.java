@@ -1,42 +1,29 @@
 package br.com.nevesHoteis.service;
 
-import br.com.nevesHoteis.controller.Dto.RedefinePasswordDto;
-import br.com.nevesHoteis.controller.Dto.TokenEmailDto;
+import br.com.nevesHoteis.controller.dto.user.RedefinePasswordDto;
+import br.com.nevesHoteis.controller.dto.token.TokenEmailDto;
 import br.com.nevesHoteis.domain.*;
 import br.com.nevesHoteis.infra.exeption.ValidateUserException;
 import br.com.nevesHoteis.repository.UserRepository;
-import br.com.nevesHoteis.service.validation.User.ValidateUser;
 import jakarta.persistence.EntityNotFoundException;
-import org.checkerframework.checker.units.qual.A;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.stereotype.Component;
 
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
 import static br.com.nevesHoteis.domain.Role.ADMIN;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.*;
 
