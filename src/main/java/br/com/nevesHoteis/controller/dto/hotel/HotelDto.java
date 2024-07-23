@@ -26,9 +26,6 @@ public class HotelDto{
         @Size( min = 2, max = 30)
         private String name;
         @NotNull
-        @FutureOrPresent
-        private LocalDate availabilityDate;
-        @NotNull
         @Positive
         @Max(999999)
         private BigDecimal dailyValue;
@@ -40,7 +37,7 @@ public class HotelDto{
         private AddressDto address;
         static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
     public HotelDto(Hotel hotel) {
-        this(hotel.getName(), hotel.getAvailabilityDate()
+        this(hotel.getName()
                 , hotel.getDailyValue(), null,new AddressDto( hotel.getAddress()));
     }
 }

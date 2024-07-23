@@ -84,7 +84,7 @@ class HotelServiceTest{
         then(tMock).should().merge(hotel);
     }
     private Hotel randomHotel(){
-        return new Hotel(1L, "Hotel fiveStars", LocalDate.now().plusWeeks(4), new BigDecimal(35), randomAddress());
+        return new Hotel(1L, "Hotel fiveStars",  new BigDecimal(35), randomAddress());
     }
     private Address randomAddress(){
         return new Address( "45502-245", "BA", "Jequié", "Beira rio", "Rua Portugual");

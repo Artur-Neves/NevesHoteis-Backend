@@ -10,13 +10,12 @@ import java.util.List;
 public record HotelCompleteDto (
          Long id,
          String name,
-         LocalDate availabilityDate,
          BigDecimal dailyValue,
          List<byte[]> photos,
          AddressCompleteDto address
 ){
     public HotelCompleteDto(Hotel hotel) {
-        this(hotel.getId(), hotel.getName(), hotel.getAvailabilityDate()
+        this(hotel.getId(), hotel.getName()
         , hotel.getDailyValue(), hotel.getPhotos(),new AddressCompleteDto( hotel.getAddress()));
     }
 }

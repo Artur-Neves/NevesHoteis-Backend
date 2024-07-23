@@ -57,7 +57,7 @@ class HotelControllerTest extends BaseControllerTest<HotelService> {
     @BeforeEach
     void setUp() {
         address =new Address( "45502-245", "BA", "Jequié", "Beira rio", "Rua Portugual");
-        hotel = new Hotel(1L, "Hotel fiveStars", LocalDate.now().plusWeeks(2), new BigDecimal(35), address);
+        hotel = new Hotel(1L, "Hotel fiveStars", new BigDecimal(35), address);
     }
     @WithMockUser
     @Test
@@ -124,7 +124,6 @@ class HotelControllerTest extends BaseControllerTest<HotelService> {
                 .file("photos", convertMultiPartFileInByte( multipartFile))
                 .file("photos", convertMultiPartFileInByte( multipartFile))
                 .param("name", hotel.getName())
-                .param("availabilityDate", hotel.getAvailabilityDate().toString())
                 .param("dailyValue", hotel.getDailyValue().toString())
                 .param("address.cep", hotel.getAddress().getCep())
                 .param("address.state", hotel.getAddress().getState())

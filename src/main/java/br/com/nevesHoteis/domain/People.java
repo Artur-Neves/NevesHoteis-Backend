@@ -34,6 +34,9 @@ public class People {
     protected User user;
     protected byte[] profilePicture;
 
+    public People(Long id) {
+        this.id = id;
+    }
 
     public People(Long id, String name, LocalDate birthDay, String cpf, String phone, Address address, User user) {
         this.id = id;
