@@ -41,7 +41,7 @@ public class AuthenticationConfig {
                         req.requestMatchers(HttpMethod.PUT, "/user/redefine-password").permitAll();
                         req.requestMatchers( "/admin/**", "/employee/**").hasAuthority("ADMIN");
                         req.requestMatchers("/hotel/**").hasAuthority("EMPLOYEE");
-                        req.requestMatchers("/booking/**").hasAuthority("USER");
+                        //req.requestMatchers("/booking/**").hasAuthority("USER");
 
                                 req.anyRequest().authenticated();
 

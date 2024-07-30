@@ -9,6 +9,7 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotNull;
+import org.springframework.cglib.core.Local;
 
 import java.time.LocalDate;
 
@@ -17,10 +18,11 @@ public record BookingCompleteDto (
         PeopleCompleteDto simpleUser,
         HotelCompleteDto hotel,
         LocalDate startDate,
-        LocalDate endDate
+        LocalDate endDate,
+        LocalDate getCancellationDeadline
 ){
     public BookingCompleteDto(Booking booking) {
         this(booking.getId() , new PeopleCompleteDto(booking.getSimpleUser()), new HotelCompleteDto(booking.getHotel()),
-                booking.getStartDate(), booking.getEndDate());
+                booking.getStartDate(), booking.getEndDate(), booking.getCancellationDeadline());
     }
 }

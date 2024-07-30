@@ -36,7 +36,7 @@ public class ExceptionAdvice {
     ResponseEntity<?> sqlException(SQLException e){
         return ResponseEntity.badRequest().body( new ErrorFormation("Error SQL", e.getMessage() ));
     }
-    @ExceptionHandler({ValidateUserException.class, EmailTokenException.class})
+    @ExceptionHandler(MyExceptions.class)
     ResponseEntity<?> validateUserException(MyExceptions e){
         return ResponseEntity.badRequest().body(new ErrorFormation(e.getField(), e.getMessage()));
     }

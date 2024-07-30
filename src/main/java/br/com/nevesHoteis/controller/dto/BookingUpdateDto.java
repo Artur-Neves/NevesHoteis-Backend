@@ -1,5 +1,6 @@
 package br.com.nevesHoteis.controller.dto;
 
+import br.com.nevesHoteis.domain.Booking;
 import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotNull;
@@ -14,5 +15,8 @@ public record BookingUpdateDto (
         @Future
         LocalDate endDate
 ){
+        public BookingUpdateDto(Booking booking){
+                this(booking.getStartDate(), booking.getEndDate());
+        }
 
 }

@@ -45,7 +45,4 @@ public class SimpleUser extends People {
         setRole(Role.USER);
     }
 
-
-
-
 }

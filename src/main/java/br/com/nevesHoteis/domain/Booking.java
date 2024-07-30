@@ -5,12 +5,12 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.cglib.core.Local;
 
 import java.time.LocalDate;
 
 @Entity
-@AllArgsConstructor
 @NoArgsConstructor
 @Getter
 public class Booking {
@@ -25,19 +25,38 @@ public class Booking {
     @ManyToOne
     private Hotel hotel;
 
-
-
-    public Booking( SimpleUser simpleUser, Hotel hotel, LocalDate startDate, LocalDate endDate) {
+    public Booking(Long id, LocalDate startDate, LocalDate endDate, SimpleUser simpleUser, Hotel hotel) {
+        this.id = id;
         this.startDate = startDate;
         this.endDate = endDate;
         this.simpleUser = simpleUser;
         this.hotel = hotel;
-        this.cancellationDeadline = endDate.minusDays(2);
+        this.cancellationDeadline = startDate.minusDays(2);
+    }
+
+    public Booking(SimpleUser simpleUser, Hotel hotel, LocalDate startDate, LocalDate endDate) {
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.simpleUser = simpleUser;
+        this.hotel = hotel;
+        this.cancellationDeadline = startDate.minusDays(2);
     }
 
     public void merge(LocalDate startDate, LocalDate endDate) {
         this.startDate = startDate;
         this.endDate = endDate;
-        this.cancellationDeadline = endDate.minusDays(2);
+        this.cancellationDeadline = startDate.minusDays(2);
+    }
+
+    @Override
+    public String toString() {
+        return "Booking{" +
+                "id=" + id +
+                ", startDate=" + startDate +
+                ", endDate=" + endDate +
+                ", cancellationDeadline=" + cancellationDeadline +
+                ", simpleUser=" + simpleUser +
+                ", hotel=" + hotel +
+                '}';
     }
 }

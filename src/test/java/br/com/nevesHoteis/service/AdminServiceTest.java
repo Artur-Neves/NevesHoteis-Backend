@@ -12,6 +12,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -105,7 +106,7 @@ class AdminServiceTest extends PeopleServiceTest<Admin> {
         User user = mock(User.class);
         when(people.getUser()).thenReturn(user);
         service.setValidatePeople(Arrays.asList(validateBirthdayPeople, validateCpfPeople));
-        service.setValidateUsers(Arrays.asList(validatePasswordUser));
+        service.setValidateUsers(Collections.singletonList(validatePasswordUser));
         service.validate(people);
         verify(validateBirthdayPeople).validate(people);
         verify(validateCpfPeople).validate(people);
