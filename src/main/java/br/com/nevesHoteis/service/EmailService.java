@@ -7,6 +7,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -20,7 +21,7 @@ public class EmailService {
     private MimeMessage message;
     @Autowired
     private MimeMessageHelper helper;
-
+    @Async
     public void sendConfirmEmail(String recipient, String code) throws MessagingException {
         helper.setTo(recipient);
         helper.setSubject("Código de Confirmação de Email");

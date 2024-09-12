@@ -5,6 +5,7 @@ import br.com.nevesHoteis.controller.dto.hotel.HotelCompleteDto;
 import br.com.nevesHoteis.controller.dto.hotel.HotelDto;
 import br.com.nevesHoteis.controller.dto.user.LoginDto;
 import br.com.nevesHoteis.domain.Hotel;
+import br.com.nevesHoteis.repository.projections.HotelDatesCardProjection;
 import br.com.nevesHoteis.service.HotelService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,8 +25,8 @@ public class HotelController {
     @Autowired
     private HotelService service;
     @GetMapping
-    ResponseEntity<Page<HotelCompleteDto>> findAllHotel (@PageableDefault(size = 10) Pageable pageable){
-        return ResponseEntity.ok(service.findAll(pageable).map(HotelCompleteDto::new));
+    ResponseEntity<Page<HotelDatesCardProjection>> findAllHotel (@PageableDefault(size = 10) Pageable pageable){
+        return ResponseEntity.ok(service.findAll(pageable));
     }
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     ResponseEntity<HotelCompleteDto> saveHotel(@Valid @ModelAttribute HotelDto HotelDto, UriComponentsBuilder uriComponentsBuilder){

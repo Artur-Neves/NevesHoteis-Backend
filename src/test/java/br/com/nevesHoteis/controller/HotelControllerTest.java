@@ -5,6 +5,7 @@ import br.com.nevesHoteis.domain.Address;
 import br.com.nevesHoteis.controller.dto.hotel.HotelCompleteDto;
 import br.com.nevesHoteis.controller.dto.hotel.HotelDto;
 import br.com.nevesHoteis.domain.Hotel;
+import br.com.nevesHoteis.repository.projections.HotelDatesCardProjection;
 import br.com.nevesHoteis.service.HotelService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -44,6 +45,8 @@ class HotelControllerTest extends BaseControllerTest<HotelService> {
     @Autowired
     private JacksonTester<HotelCompleteDto> hotelCompleteDtoJacksonTester;
     @Autowired
+    private JacksonTester<Page<HotelDatesCardProjection>> hotelDatesCardProjectionJacksonTester;
+    @Autowired
     private JacksonTester<Page<HotelCompleteDto>> pageHotelCompleteDto;
     @Mock
     private HotelDto hotelDto;
@@ -63,12 +66,12 @@ class HotelControllerTest extends BaseControllerTest<HotelService> {
     @Test
     @DisplayName("Testando o selecionamento de todos os hoteis")
     void test01() throws Exception {
-        Page<Hotel> hotelPage = new PageImpl<>(List.of(hotel));
+        Page<HotelDatesCardProjection> hotelPage = new PageImpl<>(List.of(new HotelDatesCardProjection(hotel)));
         given(service.findAll(any(Pageable.class))).willReturn(hotelPage);
         mockMvc.perform(get("/hotel"))
                 .andExpectAll(status().isOk(),
                         content().contentType(MediaType.APPLICATION_JSON),
-                        content().json(pageHotelCompleteDto.write(hotelPage.map(HotelCompleteDto::new)).getJson()));
+                        content().json(hotelDatesCardProjectionJacksonTester.write(hotelPage).getJson()));
     }
 
     @Test

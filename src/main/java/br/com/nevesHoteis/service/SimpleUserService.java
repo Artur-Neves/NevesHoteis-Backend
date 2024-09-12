@@ -47,7 +47,7 @@ public class SimpleUserService implements PeopleService<SimpleUser> {
         return (SimpleUser) simpleUser.merge(simpleUserDto);
     }
     public SimpleUser findById(Long id){
-        return repository.findById(id).orElseThrow(()->new EntityNotFoundException("Entity not found"));
+        return repository.findById(id).orElseThrow(()->new EntityNotFoundException("Entidade SimpleUser não encontrada com este identificador"));
     }
 
     public void delete(Long id) {
@@ -61,7 +61,7 @@ public class SimpleUserService implements PeopleService<SimpleUser> {
 
     @Override
     public SimpleUser findByUserLogin(String login) {
-        return repository.findByUserLogin(login).orElseThrow(()->new EntityNotFoundException("Entity not found"));
+        return repository.findByUserLogin(login).orElseThrow(()->new EntityNotFoundException("Entidade SimpleUser não encontrada com este identificador"));
     }
 
     public SimpleUser simpleSave(SimpleUser simpleUser) {

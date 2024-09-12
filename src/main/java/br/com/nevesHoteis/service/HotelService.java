@@ -2,6 +2,7 @@ package br.com.nevesHoteis.service;
 
 import br.com.nevesHoteis.domain.Hotel;
 import br.com.nevesHoteis.repository.HotelRepository;
+import br.com.nevesHoteis.repository.projections.HotelDatesCardProjection;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -13,8 +14,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class HotelService {
     @Autowired
     private HotelRepository repository;
-    public Page<Hotel> findAll(Pageable pageable) {
-        return repository.findAll(pageable);
+    public Page<HotelDatesCardProjection> findAll(Pageable pageable) {
+        return repository.findAllHotelForCard(pageable);
     }
 
     public Hotel save(Hotel hotel) {
@@ -26,7 +27,7 @@ public class HotelService {
     }
 
     public Hotel findById(Long id) {
-        return repository.findById(id).orElseThrow(()-> new EntityNotFoundException("Entity not found"));
+        return repository.findById(id).orElseThrow(()-> new EntityNotFoundException("Entidade Hotel não encontrada com este identificador"));
     }
     @Transactional
     public Hotel update(Long id, Hotel hotelDto) {

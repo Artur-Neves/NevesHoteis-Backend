@@ -4,6 +4,7 @@ import com.auth0.jwt.exceptions.JWTVerificationException;
 import jakarta.mail.MessagingException;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -22,7 +23,7 @@ import java.sql.SQLException;
 public class ExceptionAdvice {
     @ExceptionHandler(EntityNotFoundException.class)
     ResponseEntity<?> notFoundException (Exception e){
-        return ResponseEntity.notFound().build();
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
     }
     @ExceptionHandler(MethodArgumentNotValidException.class)
     ResponseEntity<?> methordArgument(MethodArgumentNotValidException e){
@@ -56,6 +57,10 @@ public class ExceptionAdvice {
     ResponseEntity<?> notSendEmail (Exception e){
         return ResponseEntity.badRequest().body(new ErrorFormation("Email", "Erro ao tentar enviar o email"));
     }
+//    @ExceptionHandler(Exception.class)
+//    ResponseEntity<?> jokerResponseError(Exception e){
+//        return ResponseEntity.badRequest().body(new ErrorFormation("Joker", e.getMessage()));
+//    }
 
 
     private record ErrorFormation(

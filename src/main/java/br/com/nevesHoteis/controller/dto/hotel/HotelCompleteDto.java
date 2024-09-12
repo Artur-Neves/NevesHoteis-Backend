@@ -11,11 +11,13 @@ public record HotelCompleteDto (
          Long id,
          String name,
          BigDecimal dailyValue,
+         BigDecimal realDailyValue,
          List<byte[]> photos,
+         Boolean inPromotion,
          AddressCompleteDto address
 ){
     public HotelCompleteDto(Hotel hotel) {
         this(hotel.getId(), hotel.getName()
-        , hotel.getDailyValue(), hotel.getPhotos(),new AddressCompleteDto( hotel.getAddress()));
+        , hotel.getDailyValue(), hotel.getRealDailyValue(), hotel.getPhotos(), hotel.isInPromotion(),new AddressCompleteDto( hotel.getAddress()));
     }
 }

@@ -51,11 +51,11 @@ public class AdminService implements PeopleService<Admin> {
 
     @Override
     public Admin findById(Long id) {
-        return repository.findById(id).orElseThrow(()->new EntityNotFoundException("Entity not found"));
+        return repository.findById(id).orElseThrow(()->new EntityNotFoundException("Entidade Admin não encontrada com este identificador"));
     }
     @Override
     public Admin findByUserLogin(String login) {
-        return repository.findByUserLogin(login).orElseThrow(()->new EntityNotFoundException("Entity not found"));
+        return repository.findByUserLogin(login).orElseThrow(()->new EntityNotFoundException("Entidade Admin não encontrada com este identificador"));
     }
 
     @Override

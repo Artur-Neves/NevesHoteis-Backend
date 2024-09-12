@@ -3,6 +3,7 @@ package br.com.nevesHoteis.service;
 import br.com.nevesHoteis.domain.Address;
 import br.com.nevesHoteis.domain.Hotel;
 import br.com.nevesHoteis.repository.HotelRepository;
+import br.com.nevesHoteis.repository.projections.HotelDatesCardProjection;
 import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -21,6 +22,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
+import static br.com.nevesHoteis.Fixture.buildHotel;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -47,10 +49,10 @@ class HotelServiceTest{
     @Test
     @DisplayName("Testando o retorno de todas as entidades")
     void test02(){
-        Page<Hotel> pageHotel = new PageImpl<Hotel>(List.of(tMock));
-        given(repository.findAll(pageable)).willReturn(pageHotel);
+        Page<HotelDatesCardProjection> pageHotel = new PageImpl<Hotel>(List.of(buildHotel())).map(HotelDatesCardProjection::new);
+        given(repository.findAllHotelForCard(pageable)).willReturn(pageHotel);
         assertEquals(pageHotel, service.findAll(pageable));
-        then(repository).should().findAll(pageable);
+        then(repository).should().findAllHotelForCard(pageable);
     }
     @Test
     @DisplayName("Testando a exlusão de uma entidade")

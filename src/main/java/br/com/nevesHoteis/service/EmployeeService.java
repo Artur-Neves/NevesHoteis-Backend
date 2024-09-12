@@ -52,11 +52,11 @@ public class EmployeeService implements PeopleService<Employee> {
 
     @Override
     public Employee findById(Long id) {
-        return repository.findById(id).orElseThrow(() -> new EntityNotFoundException("Entity not found"));
+        return repository.findById(id).orElseThrow(() -> new EntityNotFoundException("Entidade Employee não encontrada com este identificador"));
     }
     @Override
     public Employee findByUserLogin(String login) {
-        return repository.findByUserLogin(login).orElseThrow(()->new EntityNotFoundException("Entity not found"));
+        return repository.findByUserLogin(login).orElseThrow(()->new EntityNotFoundException("Entidade Employee não encontrada com este identificador"));
     }
     @Override
     public void delete(Long id) {

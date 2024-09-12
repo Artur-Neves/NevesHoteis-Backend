@@ -139,7 +139,7 @@
 					</targetClasses>
 					<targetTests>
 						<param>br.com.nevesHoteis.service.*</param>
-						<param>br.com.nevesHoteis.controller.*Controller*</param>
+							<param>br.com.nevesHoteis.controller.*Controller*</param>
 					</targetTests>
 
 				</configuration>

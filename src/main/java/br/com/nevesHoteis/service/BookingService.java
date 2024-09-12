@@ -54,7 +54,7 @@ public class BookingService {
     }
 
     public Booking findById(Long id){
-        return repository.findById(id).orElseThrow(() -> new EntityNotFoundException("Entity not found"));
+        return repository.findById(id).orElseThrow(() -> new EntityNotFoundException("Entidade Booking não encontrada com este identificador"));
     }
 
     private Booking convertBookingDtoInBooking(BookingDto dto){

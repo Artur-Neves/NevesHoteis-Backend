@@ -4,6 +4,7 @@ import br.com.nevesHoteis.domain.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class Fixture {
     public static Booking buildBooking(){
@@ -19,7 +20,12 @@ public class Fixture {
     static Address buildAddress(){
         return new Address( "76854-245", "BA", "Jequié", "Beira rio", "Rua Portugual");
     }
-    static Hotel buildHotel(){
-        return new Hotel(1L, "Hotel fiveStars", new BigDecimal(35), buildAddress());
+    public static Hotel buildHotel(){
+        Hotel hotel = new Hotel(1L, "Hotel fiveStars", new BigDecimal(35), buildAddress());
+        hotel.getListPromotion().add(new Promotion( 1L, BigDecimal.valueOf(10), LocalDateTime.now().plusHours(1), LocalDateTime.now().plusDays(4), hotel));
+        return hotel;
+    }
+    public static Promotion buildPromotion(){
+        return new Promotion(1L, BigDecimal.valueOf(10), LocalDateTime.now().plusHours(1), LocalDateTime.now().plusDays(4), buildHotel());
     }
 }
