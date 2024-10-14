@@ -14,8 +14,10 @@ import org.springframework.transaction.annotation.Transactional;
 public class HotelService {
     @Autowired
     private HotelRepository repository;
-    public Page<HotelDatesCardProjection> findAll(Pageable pageable) {
-        return repository.findAllHotelForCard(pageable);
+    public Page<HotelDatesCardProjection> findAll(Pageable pageable, String name, boolean inPromotion) {
+        String inPromotionString= ((inPromotion) ? "true" : null);
+        String nameValidate = ((name==null) ? " ": name.toUpperCase());
+        return repository.findAllHotelForCard(pageable, nameValidate, inPromotionString);
     }
 
     public Hotel save(Hotel hotel) {

@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.Collection;
@@ -18,7 +19,9 @@ public interface HotelRepository extends JpaRepository<Hotel, Long> {
 //            "new br.com.nevesHoteis.repository.projections.PromotionCardProjection(u.promotion.discount, u.promotion.percentageDiscount)) " +
 //            "from Hotel u")
     @Query("SELECT new br.com.nevesHoteis.repository.projections.HotelDatesCardProjection( " +
-            "u)" +
-            "from Hotel u")
-    Page<HotelDatesCardProjection> findAllHotelForCard(Pageable pageable);
+            "u) " +
+            "FROM Hotel u " +
+            "WHERE ((UPPER(u.name) LIKE CONCAT('%', :name, '%'))) and (:inPromotion is null or (u.inPromotion=true) ) "
+    )
+    Page<HotelDatesCardProjection> findAllHotelForCard(Pageable pageable, @Param("name") String name,@Param("inPromotion") String inPromotion);
 }

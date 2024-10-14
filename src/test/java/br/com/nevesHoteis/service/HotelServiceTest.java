@@ -24,8 +24,7 @@ import java.util.Optional;
 
 import static br.com.nevesHoteis.Fixture.buildHotel;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
 
@@ -47,37 +46,61 @@ class HotelServiceTest{
         then(repository).should().save(tMock);
     }
     @Test
-    @DisplayName("Testando o retorno de todas as entidades")
+    @DisplayName("Testando o retorno de todas as entidades sem filtro")
     void test02(){
         Page<HotelDatesCardProjection> pageHotel = new PageImpl<Hotel>(List.of(buildHotel())).map(HotelDatesCardProjection::new);
-        given(repository.findAllHotelForCard(pageable)).willReturn(pageHotel);
-        assertEquals(pageHotel, service.findAll(pageable));
-        then(repository).should().findAllHotelForCard(pageable);
+        given(repository.findAllHotelForCard(any(Pageable.class), eq(" "), eq(null))).willReturn(pageHotel);
+        assertEquals(pageHotel, service.findAll(pageable, null, false));
+        then(repository).should().findAllHotelForCard(any(Pageable.class), eq(" "), eq(null));
+    }
+    @Test
+    @DisplayName("Testando o retorno de todas as entidades com o filtro de nome")
+    void test03(){
+        Page<HotelDatesCardProjection> pageHotel = new PageImpl<Hotel>(List.of(buildHotel())).map(HotelDatesCardProjection::new);
+        given(repository.findAllHotelForCard(any(Pageable.class), eq("ARTUR"), eq(null))).willReturn(pageHotel);
+        assertEquals(pageHotel, service.findAll(pageable, "artur", false));
+        then(repository).should().findAllHotelForCard(any(Pageable.class), eq("ARTUR"), eq(null));
+    }
+    @Test
+    @DisplayName("Testando o retorno de todas as entidades com o filtro de promoção")
+    void test04(){
+        Page<HotelDatesCardProjection> pageHotel = new PageImpl<Hotel>(List.of(buildHotel())).map(HotelDatesCardProjection::new);
+        given(repository.findAllHotelForCard(any(Pageable.class), eq(" "), eq("true"))).willReturn(pageHotel);
+        assertEquals(pageHotel, service.findAll(pageable, null, true));
+        then(repository).should().findAllHotelForCard(any(Pageable.class), eq(" "), eq("true"));
+    }
+    @Test
+    @DisplayName("Testando o retorno de todas as entidades com os filtros de promoção e nome")
+    void test05(){
+        Page<HotelDatesCardProjection> pageHotel = new PageImpl<Hotel>(List.of(buildHotel())).map(HotelDatesCardProjection::new);
+        given(repository.findAllHotelForCard(any(Pageable.class), eq("ARTUR"), eq("true"))).willReturn(pageHotel);
+        assertEquals(pageHotel, service.findAll(pageable, "artur", true));
+        then(repository).should().findAllHotelForCard(any(Pageable.class), eq("ARTUR"), eq("true"));
     }
     @Test
     @DisplayName("Testando a exlusão de uma entidade")
-    void test03(){
+    void test06(){
         given(repository.findById(anyLong())).willReturn(Optional.of(tMock));
         service.delete(anyLong());
         then(repository).should().delete(any());
     }
     @Test
     @DisplayName("Testando a procura por de uma entidade pelo Id")
-    void test04(){
+    void test07(){
         given(repository.findById(anyLong())).willReturn(Optional.of(tMock));
         assertEquals( tMock ,service.findById(anyLong()));
         then(repository).should().findById(anyLong());
     }
     @Test
     @DisplayName("Testando o lançamento de uma exception ao não achar uma entidade com o id passado")
-    void test05(){
+    void test08(){
         given(repository.findById(anyLong())).willReturn(Optional.empty());
         assertThrows(EntityNotFoundException.class, ()->service.findById(anyLong()));
         then(repository).should().findById(anyLong());
     }
     @Test
     @DisplayName("Testando o lançamento de uma exception ao não achar uma entidade com o id passado")
-    void test06(){
+    void test09(){
         Hotel hotel = randomHotel();
         given(repository.findById(anyLong())).willReturn(Optional.of(tMock));
         given(tMock.merge(hotel)).willReturn(hotel);

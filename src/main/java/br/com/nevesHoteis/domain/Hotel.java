@@ -5,6 +5,7 @@ import br.com.nevesHoteis.controller.dto.hotel.HotelDto;
 import br.com.nevesHoteis.infra.exeption.ValidateHotelException;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -36,6 +37,8 @@ public class Hotel {
     @ElementCollection
     @CollectionTable(name = "hotel_photos", joinColumns = @JoinColumn(name = "hotel_id"))
     private List<byte[]> photos = new ArrayList<>();
+    @ColumnDefault(value = "0")
+    private int countVisitors = 0;
 
     public Hotel(Long id) {
         this.id = id;
@@ -80,5 +83,9 @@ public class Hotel {
 
     public List<Promotion> getListPromotion(){
         return promotion;
+    }
+
+    public void addVisitor(){
+        countVisitors++;
     }
 }

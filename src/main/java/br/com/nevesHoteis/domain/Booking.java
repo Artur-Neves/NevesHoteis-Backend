@@ -32,6 +32,7 @@ public class Booking {
         this.simpleUser = simpleUser;
         this.hotel = hotel;
         this.cancellationDeadline = startDate.minusDays(2);
+        this.hotel.addVisitor();
     }
 
     public Booking(SimpleUser simpleUser, Hotel hotel, LocalDate startDate, LocalDate endDate) {
@@ -40,6 +41,7 @@ public class Booking {
         this.simpleUser = simpleUser;
         this.hotel = hotel;
         this.cancellationDeadline = startDate.minusDays(2);
+        this.hotel.addVisitor();
     }
 
     public void merge(LocalDate startDate, LocalDate endDate) {

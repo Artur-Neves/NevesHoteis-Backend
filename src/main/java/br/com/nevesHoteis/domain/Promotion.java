@@ -17,7 +17,6 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Table(name = "hotel_promotion")
 @Getter
-@SoftDelete
 public class Promotion {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,8 +26,8 @@ public class Promotion {
     private LocalDateTime startDate;
     @Setter
     private LocalDateTime endDate;
-    @Column(insertable=false, updatable=false)
-    private boolean deleted = Boolean.FALSE;
+    @Column(columnDefinition = "boolean default false")
+    private boolean deleted;
     @ManyToOne()
     @Setter
     private Hotel hotel;
@@ -63,7 +62,7 @@ public class Promotion {
     }
 
     private void updateStatePromotionHotel(){
-        boolean existPromotionInHotel= !hotel.isInPromotion() || hotel.getPromotion()!=null;
+        boolean existPromotionInHotel= !hotel.isInPromotion() || hotel.getPromotion()==null;
         if(existPromotionInHotel){
             hotel.setInPromotion(true);
         }
@@ -93,13 +92,18 @@ public class Promotion {
     }
 
     public void cancelPromotion(){
+        System.out.println("ouxx");
         if (!this.isDeleted()) {
+            System.out.println("massa");
             endDate = LocalDateTime.now();
-            deleted = true;
+            this.deleted = true;
+            System.out.println("mass1");
             this.getHotel().setRealDailyValue(this.getHotel().getDailyValue());
             hotel.setInPromotion(false);
+            System.out.println("massa2");
         }
         else {
+            System.out.println("merda");
             throw new ValidatePromotionException("Promoção já esta cancelada", "Uma promoção não pode ser cancelada duas vezes");
         }
     }

@@ -25,8 +25,10 @@ public class HotelController {
     @Autowired
     private HotelService service;
     @GetMapping
-    ResponseEntity<Page<HotelDatesCardProjection>> findAllHotel (@PageableDefault(size = 10) Pageable pageable){
-        return ResponseEntity.ok(service.findAll(pageable));
+    ResponseEntity<Page<HotelDatesCardProjection>> findAllHotel (@PageableDefault(size = 10) Pageable pageable,
+                                                                 @RequestParam(required = false) String name,
+                                                                 @RequestParam(required = false) boolean inPromotion){
+        return ResponseEntity.ok(service.findAll(pageable, name, inPromotion));
     }
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     ResponseEntity<HotelCompleteDto> saveHotel(@Valid @ModelAttribute HotelDto HotelDto, UriComponentsBuilder uriComponentsBuilder){

@@ -67,7 +67,7 @@ class HotelControllerTest extends BaseControllerTest<HotelService> {
     @DisplayName("Testando o selecionamento de todos os hoteis")
     void test01() throws Exception {
         Page<HotelDatesCardProjection> hotelPage = new PageImpl<>(List.of(new HotelDatesCardProjection(hotel)));
-        given(service.findAll(any(Pageable.class))).willReturn(hotelPage);
+        given(service.findAll(any(Pageable.class), any(),  anyBoolean())).willReturn(hotelPage);
         mockMvc.perform(get("/hotel"))
                 .andExpectAll(status().isOk(),
                         content().contentType(MediaType.APPLICATION_JSON),

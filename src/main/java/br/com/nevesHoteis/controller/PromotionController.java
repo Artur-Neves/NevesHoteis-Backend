@@ -24,7 +24,7 @@ public class PromotionController {
     @PostMapping()
     public ResponseEntity<PromotionCompleteDto> save(@RequestBody @Valid PromotionDto promotionDto, UriComponentsBuilder uriComponentsBuilder){
         Promotion promotion = service.save(promotionDto);
-        URI uri = uriComponentsBuilder.path("/hotel/promotion/{id}").buildAndExpand(promotion.getId()).toUri();
+        URI uri = uriComponentsBuilder.path("/hotel/{id_hotel}/promotion/{id_promotion}").buildAndExpand(promotion.getId()).toUri();
         return ResponseEntity.created(uri).body(new PromotionCompleteDto(promotion));
     }
 
